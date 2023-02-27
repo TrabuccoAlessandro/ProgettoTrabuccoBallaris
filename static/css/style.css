@@ -806,7 +806,7 @@ section {
 }
 
 .about .video-box {
-  background: url("../img/about.png") center center no-repeat;
+  background: url("../img/wimbledon.png") center center no-repeat;
   background-size: contain;
   min-height: 300px;
 }
@@ -1843,7 +1843,7 @@ section {
 
 #exitLog{
   background: linear-gradient(180deg, transparent, red);
-  color: red;
+  color: white;
 }
 
 #signIn{

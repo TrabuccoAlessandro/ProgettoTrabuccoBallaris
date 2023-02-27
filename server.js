@@ -17,27 +17,18 @@ const tokenAdministration = require("./tokenAdministration");
 const { readCookie, payload } = require("./tokenAdministration");
 
 
-dispatcher.addListener("GET","/api/Admin", function(req,res) {
+dispatcher.addListener("POST","/api/Login",function(req,res) {
 
-    let mongoConnection=mongoClient.connect(CONNECTION_STRING);
-    mongoConnection.catch((err)=>{
+    let mongoConnection = mongoClient.connect(CONNECTION_STRING);
+    mongoConnection.catch((err) => {
         console.log(err);
-        error(req,res,{"code":503,"message":"Server Mongo Error"});
+        error(req, res, {"code": 503, "message": "Server Mongo Error"});
     });
-    mongoConnection.then((client)=> {
-        let db = client.db("prova");
-        let collection = db.collection("Utenti");
-        collection.find({_id:1}).toArray(function (errQ,data){
-            if(errQ)
-                error(req,res,{"code":500,"message":"Errore durante Query Mongo"});
-            else{
-                res.end(JSON.stringify(data));
-            }
-            client.close()
-        });
+    mongoConnection.then((client) => {
+        let ob = {User: req["post"]["user"],Key:req["post"]["Pwd"]}
+        //LOGIN
     });
 });
-
 
 
 

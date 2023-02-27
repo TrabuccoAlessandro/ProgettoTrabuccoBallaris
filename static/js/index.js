@@ -1,14 +1,13 @@
 "use strict"
 
 $(()=>{
+    $("#Login").hide();
+
     $("#tagLogin").on("click",function (){
-        let admin = sendRequestNoCallback("/api/Admin","GET",{});
-        admin.fail(function (jqXHR) {
-            error(jqXHR);
-            alert("dio");
-        });
-        admin.done(function (serverData) {
-            alert(serverData[0]._id);
-        });
+        $("#Login").show();
     });
+
+    $("#exitLog").on("click",function (){
+        $("#Login").hide();
+    })
 });

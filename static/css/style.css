@@ -522,21 +522,21 @@ h6 {
 
 @-webkit-keyframes up-down {
   0% {
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
 
   100% {
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 }
 
 @keyframes up-down {
   0% {
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
 
   100% {
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 }
 
@@ -1899,5 +1899,4 @@ section {
 
 #Login {
   background: linear-gradient(#141e30, #243b55);
-  opacity: 80%;
 }

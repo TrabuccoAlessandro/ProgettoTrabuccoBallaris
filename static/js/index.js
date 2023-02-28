@@ -12,14 +12,14 @@ $(()=>{
     })
 
     $("#signIn").on("click",function (){
-        let username = $("#userLo").val;
-        let password = $("#pwdLo").val;
-        let login = sendRequestNoCallback("/api/Login","POST",{User:username,Pwd:password});
+        let username = $("#userLo").val();
+        let password = $("#pwdLo").val();
+        let login = sendRequestNoCallback("/api/Login","POST",{username:username,pwd:password});
         login.fail(function (jqXHR) {
             error(jqXHR);
         });
         login.done(function (serverdata){
-            alert(serverdata);
+            console.log(serverdata);
         })
     })
 });

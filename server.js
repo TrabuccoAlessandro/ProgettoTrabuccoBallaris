@@ -3,7 +3,6 @@
 const fs = require("fs");
 const dispatcher = require("./dispatcher");
 const http = require("http");
-
 let header = { "Content-Type": "text/html;charset=utf-8" };
 let headerJSON = { "Content-Type": "application/json;charset=utf-8" };
 const jwt = require("jsonwebtoken");
@@ -17,19 +16,43 @@ const tokenAdministration = require("./tokenAdministration");
 const { readCookie, payload } = require("./tokenAdministration");
 
 
-dispatcher.addListener("POST","/api/Login",function(req,res) {
 
+dispatcher.addListener("POST", "/api/Login", function (req, res) {
     let mongoConnection = mongoClient.connect(CONNECTION_STRING);
     mongoConnection.catch((err) => {
         console.log(err);
-        error(req, res, {"code": 503, "message": "Server Mongo Error"});
+        error(req, res, { code: 503, message: "Server Mongo Error" });
     });
     mongoConnection.then((client) => {
-        let ob = {User: req["post"]["user"],Key:req["post"]["Pwd"]}
-        //LOGIN
+        let db = client.db("prova");
+        let collection = db.collection("Utenti");
+        let username = req["post"].username;
+        collection.findOne({ User: username }, function (err, dbUser) {
+            if (err)
+                error(req, res, {
+                    code: 500,
+                    message: "Errore di esecuzione della query",
+                });
+            else {
+                if (dbUser == null)
+                    error(req, res, {
+                        code: 401,
+                        message: "Errore di autenticazione: username errato",
+                    });
+                else {
+                    if (parseInt(req["post"].pwd) ==  parseInt(dbUser.Key)) {
+                        res.end(JSON.stringify(dbUser));
+                    } else
+                        error(req, res, {
+                            code: 401,
+                            message: "Errore di autenticazione: password errata",
+                        });
+                }
+            }
+            client.close();
+        });
     });
 });
-
 
 
 function error(req, res, err) {

@@ -32,7 +32,7 @@ tokenAdministration.prototype.createToken = function (user) {
       "user":user.User,
       "mail":user.Mail,
       "admin": user.Admin,
-      "exp": Math.floor(Date.now() / 1000 + 10),
+      "exp": Math.floor(Date.now() / 1000 + 180)
     },
     this.privateKey
   );

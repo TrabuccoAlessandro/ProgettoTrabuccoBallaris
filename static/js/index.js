@@ -1,8 +1,19 @@
 "use strict"
-
 $(()=>{
     $("#Login").hide();
     $("#profile").hide();
+    $("#registrazione").hide();
+
+    let ricacarica = false;
+    let controlloSessione = sendRequestNoCallback("/api/ctrlCookie", "GET")
+    controlloSessione.fail(function(jqXHR){
+        error(jqXHR)
+    })
+    controlloSessione.done(function(serverData){
+        caricaProfilo(serverData);
+            ricacarica = true;
+    })
+
 
     $("#tagLogin").on("click",function (){
         if ($("#tagLogin").html() == "Login")
@@ -14,6 +25,7 @@ $(()=>{
         {
             // Logout
             Cookies.set("token", "corrupted");
+            window.location = "index.html";
             $("#tagLogin").html("Login");
             $("#intro").show();
             $("#profile").hide();
@@ -33,18 +45,22 @@ $(()=>{
             $("#labelLog").html("CREDENZIALI ERRATE");
         });
         login.done(function (serverdata){
-            $("#tagLogin").html("Logout");
-            $("#Login").hide();
-            $("#intro").hide();
-            $("#profile").show();
-            $("#userLo").val("");
-            $("#pwdLo").val("");
-            console.log(serverdata);
-            $("#cognomeProfilo").html(serverdata.Cognome);
-            $("#nomeProfilo").html(serverdata.Nome);
-            $("#dataProfilo").html(serverdata.DataNascita);
-            $("#mailProfilo").html(serverdata.Mail);
-            $("#userProfilo").html(serverdata.User);
+            window.location = "loginOk.html";
+            caricaProfilo(serverdata);
         })
     })
+
+    function caricaProfilo(serverdata){
+        $("#tagLogin").html("Logout");
+        $("#Login").hide();
+        $("#intro").hide();
+        $("#profile").show();
+        $("#userLo").val("");
+        $("#pwdLo").val("");
+        $("#cognomeProfilo").html(serverdata.Cognome);
+        $("#nomeProfilo").html(serverdata.Nome);
+        $("#dataProfilo").html(serverdata.DataNascita);
+        $("#mailProfilo").html(serverdata.Mail);
+        $("#userProfilo").html(serverdata.User);
+    }
 });

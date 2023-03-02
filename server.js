@@ -42,7 +42,7 @@ dispatcher.addListener("POST", "/api/Login", function (req, res) {
                 else {
                     if (req["post"].pwd.toString() == dbUser.Key.toString()) {
                         tokenAdministration.createToken(dbUser);
-                        res.setHeader("Set-Cookie","token="+tokenAdministration.token+";max-age="+(60*5)+";Path=/");
+                        res.setHeader("Set-Cookie","token="+tokenAdministration.token+";max-age="+";Path=/");
                         res.writeHead(200,headerJSON);
                         res.end(JSON.stringify(dbUser));
                     } else
@@ -56,6 +56,42 @@ dispatcher.addListener("POST", "/api/Login", function (req, res) {
         });
     });
 });
+
+dispatcher.addListener("GET", "/api/ctrlCookie", function (req, res) {
+    let mongoConnection = mongoClient.connect(CONNECTION_STRING)
+    mongoConnection.catch((err) => {
+        console.log(err);
+        error(req, res, { "code": 503, "message": "Server Mongo Error" })
+    })
+    mongoConnection.then((client) => {
+        let db = client.db("prova");
+        let collection = db.collection("Utenti")
+        tokenAdministration.ctrlToken(req, (errore) => {
+            if (errore.codeErr == -1) {
+                console.log(tokenAdministration.payload.id)
+                collection.findOne({ _id: tokenAdministration.payload.id }, (err, dbUser) => {
+                    if (err)
+                        error(req, res, { "code": 500, "message": "Errore di esecuzione della query" });
+                    else {
+                        if (dbUser == null)
+                            error(req, res, { "code": 401, "message": "Errore di autenticazione: username errato!" });
+                        else {
+                            console.log(dbUser)
+                            res.writeHead(200, headerJSON);
+                            res.end(JSON.stringify(dbUser));
+                        }
+                    }
+                    client.close();
+                })
+            } else {
+                console.log(errore)
+                client.close();
+            }
+        })
+    })
+})
+
+
 
 function error(req, res, err) {
     res.writeHead(err.code, header);

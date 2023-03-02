@@ -28,14 +28,11 @@ tokenAdministration.prototype.ctrlToken = function (req, callback) {
 tokenAdministration.prototype.createToken = function (user) {
   this.token = jwt.sign(
     {
-      reparto: user.reparto,
-      medico: user.medico,
-      paziente: user.paziente,
-      user: user.user,
-      ricoveri: user.ricoveri,
-      medicinali: user.medicinali,
-      admin: user.admin,
-      exp: Math.floor(Date.now() / 1000 + 10),
+      "id":user._id,
+      "user":user.User,
+      "mail":user.Mail,
+      "admin": user.Admin,
+      "exp": Math.floor(Date.now() / 1000 + 10),
     },
     this.privateKey
   );

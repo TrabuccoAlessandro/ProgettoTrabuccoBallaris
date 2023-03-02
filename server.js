@@ -40,7 +40,10 @@ dispatcher.addListener("POST", "/api/Login", function (req, res) {
                         message: "Errore di autenticazione: username errato",
                     });
                 else {
-                    if (parseInt(req["post"].pwd) ==  parseInt(dbUser.Key)) {
+                    if (req["post"].pwd.toString() == dbUser.Key.toString()) {
+                        tokenAdministration.createToken(dbUser);
+                        res.setHeader("Set-Cookie","token="+tokenAdministration.token+";max-age="+(60*5)+";Path=/");
+                        res.writeHead(200,headerJSON);
                         res.end(JSON.stringify(dbUser));
                     } else
                         error(req, res, {
@@ -53,7 +56,6 @@ dispatcher.addListener("POST", "/api/Login", function (req, res) {
         });
     });
 });
-
 
 function error(req, res, err) {
     res.writeHead(err.code, header);

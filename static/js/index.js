@@ -14,8 +14,7 @@ $(()=>{
             ricacarica = true;
     })
 
-
-    $("#tagLogin").on("click",function (){
+    let tagLogin = document.getElementById("tagLogin").addEventListener("click",function (){
         if ($("#tagLogin").html() == "Login")
         {
             $("#Login").show();
@@ -32,11 +31,11 @@ $(()=>{
         }
     });
 
-    $("#exitLog").on("click",function (){
-        $("#Login").hide();
-    })
+let exitLog = document.getElementById("exitLog").addEventListener("click",function (){
+    $("#Login").hide();
+})
 
-    $("#signIn").on("click",function (){
+    let signIn = document.getElementById("signIn").addEventListener("click",function (){
         let username = $("#userLo").val();
         let password = $("#pwdLo").val();
         let login = sendRequestNoCallback("/api/Login","POST",{username:username,pwd:password});

@@ -70,6 +70,21 @@ app.get("/api/ctrlSession", function (req, res) {
     });
 });
 
+app.post("/api/ctrlUser", function (req, res) {
+    let query = { User: req.body.username };
+    console.log(query);
+    mongoFunctions.findOne( "prova", "Utenti", query, function (err, data) {
+        if (err.codErr == -1) {
+            res.send(data);
+        }
+        else{
+            error(req, res, {code:err.codErr, message:err.message});
+        }
+    });
+});
+
+
+
 /* ************************************************************* */
 function error(req, res, err) {
     res.status(err.code).send(err.message);

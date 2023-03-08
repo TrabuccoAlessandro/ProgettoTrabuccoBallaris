@@ -1,108 +1,73 @@
-"use strict";
-
-const fs = require("fs");
-const dispatcher = require("./dispatcher");
-const http = require("http");
-let header = { "Content-Type": "text/html;charset=utf-8" };
-let headerJSON = { "Content-Type": "application/json;charset=utf-8" };
-const jwt = require("jsonwebtoken");
-const privateKey = fs.readFileSync("keys/private.key", "UTF8");
-const mongo = require("mongodb");
-const bcrypt = require("bcrypt");
-const mongoClient = mongo.MongoClient;
-const CONNECTION_STRING = "mongodb+srv://db1:prova123@cluster0.rzrtnub.mongodb.net/?retryWrites=true&w=majority";
-const CONNECTION_OPTIONS = { useNewUrlParser: true };
+"use strict"
+const mongoFunctions = require("./mongoFunctions");
 const tokenAdministration = require("./tokenAdministration");
-const { readCookie, payload } = require("./tokenAdministration");
+const fs = require('fs');
+const HTTPS = require('https');
 
+const express = require("express");
+const cors = require('cors');
+const app = express();
+const bodyParser = require('body-parser');
+const { token } = require("./tokenAdministration");
+//const bcrypt = require("bcrypt");
+// Online RSA Key Generator
+const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
+const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
+const credentials = { "key": privateKey, "cert": certificate };
 
+const TIMEOUT = 1000;
+let port = 8888;
 
-dispatcher.addListener("POST", "/api/Login", function (req, res) {
-    let mongoConnection = mongoClient.connect(CONNECTION_STRING);
-    mongoConnection.catch((err) => {
-        console.log(err);
-        error(req, res, { code: 503, message: "Server Mongo Error" });
-    });
-    mongoConnection.then((client) => {
-        let db = client.db("prova");
-        let collection = db.collection("Utenti");
-        let username = req["post"].username;
-        collection.findOne({ User: username }, function (err, dbUser) {
-            if (err)
-                error(req, res, {
-                    code: 500,
-                    message: "Errore di esecuzione della query",
-                });
-            else {
-                if (dbUser == null)
-                    error(req, res, {
-                        code: 401,
-                        message: "Errore di autenticazione: username errato",
-                    });
-                else {
-                    if (req["post"].pwd.toString() == dbUser.Key.toString()) {
-                        tokenAdministration.createToken(dbUser);
-                        res.setHeader("Set-Cookie","token="+tokenAdministration.token+";max-age="+";Path=/");
-                        res.writeHead(200,headerJSON);
-                        res.end(JSON.stringify(dbUser));
-                    } else
-                        error(req, res, {
-                            code: 401,
-                            message: "Errore di autenticazione: password errata",
-                        });
-                }
-            }
-            client.close();
-        });
+var httpsServer = HTTPS.createServer(credentials, app);
+httpsServer.listen(port, '127.0.0.1', function () {
+    console.log("Server running on port %s...", port);
+});
+
+// middleware
+app.use("/", bodyParser.json());
+app.use("/", bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
+app.use("/", function (req, res, next) {
+    console.log(">_ " + req.method + ": " + req.originalUrl);
+    if (Object.keys(req.query).length != 0)
+        console.log("Parametri GET: " + JSON.stringify(req.query));
+    if (Object.keys(req.body).length != 0)
+        console.log("Parametri BODY: " + JSON.stringify(req.body));
+    next();
+});
+
+app.use("/", express.static('./static'));
+
+app.post("/api/login", function (req, res) {
+    let query = { User: req.body.username };
+    console.log(query);
+    mongoFunctions.findLogin(req, "prova", "Utenti", query, function (err, data) {
+        if (err.codErr == -1) {
+            console.log(data);
+            tokenAdministration.createToken(data);
+            data.token = tokenAdministration.token;
+            res.send(data);
+        }
+        else{
+            error(req, res, {code:err.codErr, message:err.message});
+        }
     });
 });
 
-dispatcher.addListener("GET", "/api/ctrlCookie", function (req, res) {
-    let mongoConnection = mongoClient.connect(CONNECTION_STRING)
-    mongoConnection.catch((err) => {
-        console.log(err);
-        error(req, res, { "code": 503, "message": "Server Mongo Error" })
-    })
-    mongoConnection.then((client) => {
-        let db = client.db("prova");
-        let collection = db.collection("Utenti")
-        tokenAdministration.ctrlToken(req, (errore) => {
-            if (errore.codeErr == -1) {
-                console.log(tokenAdministration.payload.id)
-                collection.findOne({ _id: tokenAdministration.payload.id }, (err, dbUser) => {
-                    if (err)
-                        error(req, res, { "code": 500, "message": "Errore di esecuzione della query" });
-                    else {
-                        if (dbUser == null)
-                            error(req, res, { "code": 401, "message": "Errore di autenticazione: username errato!" });
-                        else {
-                            console.log(dbUser)
-                            res.writeHead(200, headerJSON);
-                            res.end(JSON.stringify(dbUser));
-                        }
-                    }
-                    client.close();
-                })
-            } else {
-                console.log(errore)
-                client.close();
-            }
-        })
-    })
-})
-
-
-
+/* ************************************************************* */
 function error(req, res, err) {
-    res.writeHead(err.code, header);
-    res.end(err.message);
+    res.status(err.code).send(err.message);
 }
 
-//Creazione del server
-http
-    .createServer(function (req, res) {
-        dispatcher.dispatch(req, res);
-    })
-    .listen(8888);
-dispatcher.showList();
-console.log("Server running on port 8888...");
+// default route finale
+app.use('/', function (req, res, next) {
+    res.status(404)
+    fs.readFile("./static/error.html", function (err, content) {
+        if (err)
+            content = "<h1>Risorsa non trovata</h1>" +
+                "<h2><a href='/'>Back to Home</a></h2>"
+        let pageNotFound = content.toString();
+        res.send(pageNotFound);
+    });
+});

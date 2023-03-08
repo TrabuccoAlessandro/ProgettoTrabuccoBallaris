@@ -1,20 +1,9 @@
 "use strict"
 $(()=>{
     $("#Login").hide();
-    $("#profile").hide();
-    $("#registrazione").hide();
 
-    let ricacarica = false;
-    let controlloSessione = sendRequestNoCallback("/api/ctrlCookie", "GET")
-    controlloSessione.fail(function(jqXHR){
-        error(jqXHR)
-    })
-    controlloSessione.done(function(serverData){
-        caricaProfilo(serverData);
-            ricacarica = true;
-    })
 
-    let tagLogin = document.getElementById("tagLogin").addEventListener("click",function (){
+    document.getElementById("tagLogin").addEventListener("click",function (){
         if ($("#tagLogin").html() == "Login")
         {
             $("#Login").show();
@@ -23,43 +12,33 @@ $(()=>{
         else if ($("#tagLogin").html() == "Logout")
         {
             // Logout
-            Cookies.set("token", "corrupted");
-            window.location = "index.html";
+            localStorage.setItem("token", "corrupted");
+            window.location.href = "index.html";
             $("#tagLogin").html("Login");
             $("#intro").show();
             $("#profile").hide();
         }
     });
 
-let exitLog = document.getElementById("exitLog").addEventListener("click",function (){
+     document.getElementById("exitLog").addEventListener("click",function (){
     $("#Login").hide();
 })
 
-    let signIn = document.getElementById("signIn").addEventListener("click",function (){
-        let username = $("#userLo").val();
+    document.getElementById("signIn").addEventListener("click",function (){
+        let user = $("#userLo").val();
         let password = $("#pwdLo").val();
-        let login = sendRequestNoCallback("/api/Login","POST",{username:username,pwd:password});
-        login.fail(function (jqXHR) {
-            error(jqXHR);
-            $("#labelLog").html("CREDENZIALI ERRATE");
+        let loginReq=sendRequestNoCallback("/api/login","POST",{username:user,pwd:password});
+        loginReq.fail(function (jqXHR){
+            $(".msg").html("Error login: " + jqXHR.status + " - " + jqXHR.responseText);
         });
-        login.done(function (serverdata){
+        loginReq.done(function (serverData){
+            serverData = JSON.parse(serverData);
+            localStorage.setItem("token", serverData.token);
+            serverData.Key = "";
+            serverData.token = "";
+            serverData = JSON.stringify(serverData);
+            localStorage.setItem("user",serverData);
             window.location = "loginOk.html";
-            caricaProfilo(serverdata);
-        })
+        });
     })
-
-    function caricaProfilo(serverdata){
-        $("#tagLogin").html("Logout");
-        $("#Login").hide();
-        $("#intro").hide();
-        $("#profile").show();
-        $("#userLo").val("");
-        $("#pwdLo").val("");
-        $("#cognomeProfilo").html(serverdata.Cognome);
-        $("#nomeProfilo").html(serverdata.Nome);
-        $("#dataProfilo").html(serverdata.DataNascita);
-        $("#mailProfilo").html(serverdata.Mail);
-        $("#userProfilo").html(serverdata.User);
-    }
 });

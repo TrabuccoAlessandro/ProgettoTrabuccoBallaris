@@ -43,6 +43,7 @@ tokenAdministration.prototype.ctrlToken = function (req,callback){
 
 tokenAdministration.prototype.createToken = function (user){
     this.token=jwt.sign({
+        "id":user._id,
         "user":user.User,
         "cognome":user.Cognome,
         "nome":user.Nome,

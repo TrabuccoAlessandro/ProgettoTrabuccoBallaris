@@ -2,6 +2,8 @@
 $(()=>{
     $("#Login").hide();
 
+    localStorage.setItem("token", "corrupted");
+    localStorage.setItem("user",null);
 
     document.getElementById("tagLogin").addEventListener("click",function (){
         if ($("#tagLogin").html() == "Login")
@@ -27,9 +29,10 @@ $(()=>{
     document.getElementById("signIn").addEventListener("click",function (){
         let user = $("#userLo").val();
         let password = $("#pwdLo").val();
+        $("#labelLog").html("");
         let loginReq=sendRequestNoCallback("/api/login","POST",{username:user,pwd:password});
         loginReq.fail(function (jqXHR){
-            $(".msg").html("Error login: " + jqXHR.status + " - " + jqXHR.responseText);
+            $("#labelLog").html("ERRORE LOGIN");
         });
         loginReq.done(function (serverData){
             serverData = JSON.parse(serverData);
@@ -37,7 +40,6 @@ $(()=>{
             serverData.Key = "";
             serverData.token = "";
             serverData = JSON.stringify(serverData);
-            localStorage.setItem("user",serverData);
             window.location = "loginOk.html";
         });
     })

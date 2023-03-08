@@ -55,6 +55,21 @@ app.post("/api/login", function (req, res) {
     });
 });
 
+app.get("/api/ctrlSession", function (req, res) {
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = {_id:payload.id}
+            mongoFunctions.findOne("prova","Utenti",query,function (err,data){
+                data.Key = "";
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
+});
+
 /* ************************************************************* */
 function error(req, res, err) {
     res.status(err.code).send(err.message);

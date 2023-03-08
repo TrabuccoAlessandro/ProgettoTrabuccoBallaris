@@ -43,4 +43,8 @@ $(()=>{
             window.location = "loginOk.html";
         });
     })
+
+    document.getElementById("btnSignUp").addEventListener("click",function (){
+        window.location = "signUp.html";
+    })
 });

@@ -3,7 +3,6 @@ $(()=>{
     $("#Login").hide();
 
     localStorage.setItem("token", "corrupted");
-    localStorage.setItem("user",null);
 
     document.getElementById("tagLogin").addEventListener("click",function (){
         if ($("#tagLogin").html() == "Login")

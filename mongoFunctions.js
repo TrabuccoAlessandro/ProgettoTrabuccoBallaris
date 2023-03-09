@@ -41,6 +41,24 @@ mongoFunctions.prototype.findOne=function (nomeDb,collection,query,callback){
             callback(errConn,{});
     });
 }
+mongoFunctions.prototype.conta=function (nomeDb,collection,query,callback){
+    setConnection(nomeDb,collection,function (errConn,coll,client) {
+        if(errConn.codErr==-1){
+            coll.count(query,function (errQ,data){
+                client.close();
+                let errQuery={codErr:-1,message:""};
+                if(!errQ)
+                    callback(errQuery,data);
+                else{
+                    errQuery.codErr=500;
+                    errQuery.message="Errore durante l'esecuzione della query su mongo";
+                    callback(errQuery,{});
+                }
+            });
+        }else
+            callback(errConn,{});
+    });
+}
 
 mongoFunctions.prototype.find=function (nomeDb,collection,query,callback){
     setConnection(nomeDb,collection,function (errConn,coll,client) {

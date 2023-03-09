@@ -3,7 +3,7 @@ const mongoFunctions = require("./mongoFunctions");
 const tokenAdministration = require("./tokenAdministration");
 const fs = require('fs');
 const HTTPS = require('https');
-
+const nodemailer=require("nodemailer");
 const express = require("express");
 const cors = require('cors');
 const app = express();
@@ -55,6 +55,17 @@ app.post("/api/login", function (req, res) {
     });
 });
 
+app.get("/api/getId", function (req, res) {
+    mongoFunctions.conta( "prova", "Utenti", {}, function (err, data) {
+        if (err.codErr == -1) {
+            res.send(data.toString());
+        }
+        else{
+            error(req, res, {code:err.codErr, message:err.message});
+        }
+    });
+});
+
 app.get("/api/ctrlSession", function (req, res) {
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {
@@ -70,6 +81,13 @@ app.get("/api/ctrlSession", function (req, res) {
     });
 });
 
+app.post("/api/Registrazione",function (req,res){
+let query = req.body;
+    mongoFunctions.insertOne("prova","Utenti",query,function (err,data){
+        res.send(data);
+    })
+})
+
 app.post("/api/ctrlUser", function (req, res) {
     let query = { User: req.body.username };
     console.log(query);
@@ -82,6 +100,44 @@ app.post("/api/ctrlUser", function (req, res) {
         }
     });
 });
+
+app.post("/api/codiceVer",function (req,res){
+        let mailDest = req.body.mail;
+        let cod = req.body.cod;
+        let pwd=require("./getPwd.js");
+        let transport=nodemailer.createTransport({
+            service:'gmail',
+            auth:{
+                user:"trabucco.ballaris.esame@gmail.com",
+                pass:pwd
+            }
+        });
+        process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
+        let bodyHtml = "<html><body><br /><br /><h1>Dati del giocatore selezionato</h1>" +
+            "<h3 style='font-weight: normal; font-size: 18pt; color:red'><table><tr><td width='250px'>Nome</td><td width='400px'>" + "</td></tr>" +
+            "<tr><td width='250px'>Squadra</td><td width='400px'>" + "</td></tr>" +
+            "<tr><td width='250px'>Punti</td><td width='400px'>" + cod + "</td></tr>" +
+            "</table></h3>" +
+            "<br><br><h2>Grazie per averci contattato. Il team della 5A info</h2></body></html>";
+        const message={
+            from:"trabucco.ballaris.esame@gmail.com",
+            to: mailDest,
+            subject:"Codice Verifica",
+            html:bodyHtml
+        };
+        transport.sendMail(message,function (err,info){
+            if(err){
+                console.log(err);
+                process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=1;
+                res.send("Errore di invio mail");
+            }
+            else{
+                console.log(info);
+                process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=1;
+                res.send(JSON.stringify(info));
+            }
+        });
+})
 
 
 

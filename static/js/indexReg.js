@@ -31,29 +31,30 @@ $(()=>{
                         serverData = JSON.parse(serverData);
                         let id = parseInt(serverData) +1;
                         console.log(id);
-                    });
-                    userDaReg._id = id;
-                    userDaReg.Nome = $("#txtNome").val();
-                    userDaReg.Cognome = $("#txtCognome").val();
-                    userDaReg.DataNascita = $("#txtData").val();
-                    userDaReg.Admin = false;
-                    userDaReg.Mail = $("#txtMail").val();
-                    userDaReg.User = $("#txtUser").val();
-                    userDaReg.Key = $("#txtPassword").val();
-                    number = Math.round(Math.random () * 1000000);
-                    let verificaCodice = sendRequestNoCallback("/api/codiceVer","POST",{cod:number,mail:userDaReg.Mail});
-                    verificaCodice.fail(function (jqXHR) {
-                        error(jqXHR);
-                    });
-                    verificaCodice.done(function (serverData){
-                        console.log(serverData);
-                    });
+                        userDaReg._id = parseInt(id);
+                        userDaReg.Nome = $("#txtNome").val();
+                        userDaReg.Cognome = $("#txtCognome").val();
+                        userDaReg.DataNascita = $("#txtData").val();
+                        userDaReg.Admin = false;
+                        userDaReg.Mail = $("#txtMail").val();
+                        userDaReg.User = $("#txtUser").val();
+                        userDaReg.Key = $("#txtPassword").val();
 
-                    $("#registra").hide();
-                    $("#verifica").show();
+                        number = Math.round(Math.random () * 1000000);
+                        let verificaCodice = sendRequestNoCallback("/api/codiceVer","POST",{cod:number,mail:userDaReg.Mail});
+                        verificaCodice.fail(function (jqXHR) {
+                            error(jqXHR);
+                        });
+                        verificaCodice.done(function (serverData){
+                            console.log(serverData);
+                        });
+
+                        $("#registra").hide();
+                        $("#verifica").show();
+                    });
                 }
                 else
-                    alert("Inserisci TUTTI I CAMPI");
+                    alert("Inserisci TUTTI I CAMPI / USER già ESISTENTE");
             });
         }
         else

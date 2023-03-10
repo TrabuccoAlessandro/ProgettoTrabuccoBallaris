@@ -87,7 +87,7 @@ mongoFunctions.prototype.findLogin = function(req,nomedb,collection,query,callba
                 if(data==null)
                     errData={codErr:401,message:"Errore di login. Username inesistente"}
                 else{
-                    if(req.body.pwd.toString() == data.Key.toString())
+                    if(bcrypt.compareSync(req.body.pwd,data.Key))
                         errData={codErr:-1,message:""}     // login ok
                     else
                         errData={codErr:401,message:"Errore di login. Password errata"}

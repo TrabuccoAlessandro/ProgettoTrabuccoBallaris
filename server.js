@@ -9,7 +9,7 @@ const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
 const { token } = require("./tokenAdministration");
-//const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 // Online RSA Key Generator
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
 const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
@@ -83,6 +83,8 @@ app.get("/api/ctrlSession", function (req, res) {
 
 app.post("/api/Registrazione",function (req,res){
 let query = req.body;
+query.Key = bcrypt.hashSync(query.Key,12);
+console.log(query);
     mongoFunctions.insertOne("prova","Utenti",query,function (err,data){
         res.send(data);
     })

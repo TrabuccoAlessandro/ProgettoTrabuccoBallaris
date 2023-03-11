@@ -18,7 +18,7 @@ $(()=>{
         {
             let ctrlUser = sendRequestNoCallback("/api/ctrlUser","POST",{username:user})
             ctrlUser.fail(function (jqXHR){
-                alert("Errore");
+                console.log(jqXHR);
             });
             ctrlUser.done(function (serverData){
                 if(serverData == "" && $("#txtMail").val() != "" && $("#txtCognome").val()!="" && $("#txtNome").val()!="" && $("#txtPassword").val()!=""&& $("#txtData").val()!="")
@@ -53,8 +53,6 @@ $(()=>{
                         $("#verifica").show();
                     });
                 }
-                else
-                    alert("Inserisci TUTTI I CAMPI / USER già ESISTENTE");
             });
         }
         else

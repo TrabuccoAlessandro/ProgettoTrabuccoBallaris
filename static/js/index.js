@@ -30,9 +30,7 @@ $(()=>{
         let password = $("#pwdLo").val();
         $("#labelLog").html("");
         let loginReq=sendRequestNoCallback("/api/login","POST",{username:user,pwd:password});
-        loginReq.fail(function (jqXHR){
-            $("#labelLog").html("ERRORE LOGIN");
-        });
+        
         loginReq.done(function (serverData){
             serverData = JSON.parse(serverData);
             localStorage.setItem("token", serverData.token);
@@ -40,6 +38,9 @@ $(()=>{
             serverData.token = "";
             serverData = JSON.stringify(serverData);
             window.location = "loginOk.html";
+        });
+        loginReq.fail(function (jqXHR){
+            $("#labelLog").html("ERRORE LOGIN");
         });
     })
 

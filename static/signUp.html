@@ -1,151 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>SmashSphere</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-  <script type="text/javascript" src="js/libreria.js"></script>
-  <script type="text/javascript" src="js/indexReg.js"></script>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="img/palla-da-tennis-PhotoRoom.png-PhotoRoom.png" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="vendor/aos/aos.css" rel="stylesheet">
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <link href="css/style.css" rel="stylesheet">
-
+	<meta charset="utf-8">
+	<title>SmashSphere</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="Registra/css/opensans-font.css">
+	<link rel="stylesheet" type="text/css" href="Registra/fonts/line-awesome/css/line-awesome.min.css">
+	<!-- Jquery -->
+	<link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="Registra/css/style.css"/>
+    
+	  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+  	<script type="text/javascript" src="js/libreria.js"></script>
+  	<script type="text/javascript" src="js/indexReg.js"></script>
 </head>
+<body class="form-v7">
+	<div class="page-content">
+		<div class="form-v7-content" id="registra">
+			<div class="form-left">
+				<img src="Registra/images/back.webp" alt="form">
+				<p class="text-1 word flicker">REGISTRATI</p>
+			</div>
+			<form class="form-detail" action="#" method="post" id="myform">
+				<div class="form-row">
+					<label for="txtNome">NOME</label>
+					<input type="text" name="nome" id="txtNome" class="input-text" required>
+				</div>
+				<div class="form-row">
+					<label for="Cognome">COGNOME</label>
+					<input type="text" name="cognome" id="txtCognome" class="input-text" required>
+				</div>
+				<div class="form-row">
+					<label for="txtUser">USERNAME</label>
+					<input type="text" name="username" id="txtUser" class="input-text" required>
+				</div>
+				<div class="form-row">
+					<label for="txtData" >DATA DI NASCITA</label>
+					<input type="date" name="data" id="txtData" class="input-text">
+				</div>
+				<div class="form-row">
+					<label for="txtMail">E-MAIL</label>
+					<input type="text" name="your_email" id="txtMail" class="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
+				</div>
+				<div class="form-row">
+					<label for="txtPassword" >PASSWORD</label>
+					<input type="password" name="password" id="txtPassword" class="input-text" required>
+				</div>
+				<div class="form-row">
+					<label for="comfirm_password">CONFIRM PASSWORD</label>
+					<input type="password" name="comfirm_password" id="comfirm_password" class="input-text" required>
+				</div>
+				<div class="form-row-last">
+					<button id="btnRegistra">Registrati</button>
+					<button id="btnAnnulla">Annulla</button>
+				</div>
+			</form>
+		</div>
+		
+	</div>
+	<section class="vh-100" style="background-color: #eee;" id="verifica">
+		<div class="container h-100">
+		  <div class="row d-flex justify-content-center align-items-center h-100">
+			<div class="col-lg-12 col-xl-11">
+			  <div class="card text-black" style="border-radius: 25px;">
+				<div class="card-body p-md-5">
+				  <div class="row justify-content-center">
+					<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+					  <form>
+						<div class="d-flex flex-row align-items-center mb-4">
+						  <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+						  <div class="form-outline flex-fill mb-0">
+							<input type="text" id="txtCodice" class="form-control" />
+							<label class="form-label" for="txtCodice">Codice Verifica MAIL</label>
+						  </div>
+						</div>
+						<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+						  <button type="button" class="btn mb-2 mb-md-0 btn-primary"  id="btnVerifica">Verifica</button>
+						</div>
+						<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+						<button type="button" class="btn mb-2 mb-md-0 btn-danger"  id="btnIndietro">Indietro</button>
+					  </div>
+	  
+					  </form>
+					</div>
+					<div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+					  <img src="img/reg.png"
+						   class="img-fluid" alt="Sample image">
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+	<script>
+		jQuery.validator.setDefaults({
+		  	debug: true,
+		  	success:  function(label){
+        		label.attr('id', 'valid');
+   		 	},
+		});
+		$( "#myform" ).validate({
+		  	rules: {
+			    txtMail: {
+			      	required: true,
+			      	email: true
+			    },
+				txtUser:{
+					required:true
+				},
+				txtNome:{
+					required:true
+				},
+				txtCognome:{
+					required:true
+				},
+				txtData:{
+					required:true
+				},
+			    txtPassword: "required",
+		    	comfirm_password: {
+		      		equalTo: "#txtPassword"
+		    	}
+		  	},
+		  	messages: {
+				txtUser: {
+		  			required: "Please enter an username"
+		  		},
+				txtNome: {
+		  			required: "Please enter a name"
+		  		},
+				txtCognome: {
+		  			required: "Please enter a surname"
+		  		},
+		  		txtMail: {
+		  			required: "Please provide an email"
+		  		},
+		  		txtPassword: {
+	  				required: "Please provide a password"
+		  		},
 
-<body>
-<section class="vh-100" style="background-color: #eee;" id="registra">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                <form class="mx-1 mx-md-4">
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="button" class="btn mb-2 mb-md-0 btn-primary"  id="btnRegistra">Register</button>
-                    <button type="button" class="btn mb-2 mb-md-0 btn-danger"  id="btnAnnulla">Annulla</button>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="txtNome" class="form-control" />
-                      <label class="form-label" for="txtNome">Your Name</label>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="txtCognome" class="form-control" />
-                      <label class="form-label" for="txtCognome">Your Surname</label>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="email" id="txtMail" class="form-control" />
-                      <label class="form-label" for="txtMail">Your Email</label>
-                    </div>
-                  </div>
-
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="txtUser" class="form-control" />
-                      <label class="form-label" for="txtUser">User</label>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="date" id="txtData" class="form-control" />
-                      <label class="form-label" for="txtData">Date of Birth</label>
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="password" id="txtPassword" class="form-control" />
-                      <label class="form-label" for="txtPassword">Password</label>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                <img src="img/reg.png"
-                     class="img-fluid" alt="Sample image">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="vh-100" style="background-color: #eee;" id="verifica">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                <form>
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="text" id="txtCodice" class="form-control" />
-                      <label class="form-label" for="txtCodice">Codice Verifica MAIL</label>
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="button" class="btn mb-2 mb-md-0 btn-primary"  id="btnVerifica">Verifica</button>
-                  </div>
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                  <button type="button" class="btn mb-2 mb-md-0 btn-danger"  id="btnIndietro">Indietro</button>
-                </div>
-
-                </form>
-              </div>
-              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                <img src="img/reg.png"
-                     class="img-fluid" alt="Sample image">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+		  		comfirm_password: {
+		  			required: "Please provide a password",
+		      		equalTo: "Wrong Password"
+		    	}
+		  		
+		  	}
+		});
+	</script>
+	
 </body>
 </html>

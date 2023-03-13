@@ -205,7 +205,7 @@ app.post("/api/codiceVer",function (req,res){
             "            \n" +
             "             <img alt=\"Flower\" src=\"https://hs-8886753.f.hubspotemail.net/hs/hsstatic/TemplateAssets/static-1.60/img/hs_default_template_images/email_dnd_template_images/ThankYou-Flower.png\" width=\"400px\" align=\"middle\">\n" +
             "                \n" +
-            "                <h1> Welcome! </h1>\n" +
+            "                <h1>Ecco il codice "+cod+" </h1>\n" +
             "                \n" +
             "              </td>\n" +
             "        </table>\n" +

@@ -1794,7 +1794,6 @@ section {
   text-transform: uppercase;
   overflow: hidden;
   transition: .5s;
-  margin-top: 40px;
   letter-spacing: 4px
 }
 
@@ -1840,7 +1839,9 @@ section {
   animation: btn-anim2 1s linear infinite;
   animation-delay: .25s
 }
-
+#CliccaQui{
+  font-size: 8pt;
+}
 #exitLog{
   background: linear-gradient(180deg, transparent, red);
   color: white;

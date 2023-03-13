@@ -143,6 +143,9 @@ body {
     font-size: 18px;
     font-weight: 900;
 }
+#Titolo{
+	text-align: center;
+}
 .form-v7-content .form-detail .input-text {
 	margin-bottom: 28px;
 }

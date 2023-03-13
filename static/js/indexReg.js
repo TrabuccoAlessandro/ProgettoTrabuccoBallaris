@@ -3,10 +3,6 @@ $(()=>{
     $("#verifica").hide();
     let userDaReg = {};
     let number;
-    document.getElementById("btnIndietro").addEventListener("click", function () {
-        $("#registra").show();
-        $("#verifica").hide();
-    });
 
     document.getElementById("btnAnnulla").addEventListener("click", function (){
        window.location = "index.html";
@@ -48,9 +44,6 @@ $(()=>{
                         verificaCodice.done(function (serverData){
                             console.log(serverData);
                         });
-
-                        $("#registra").hide();
-                        $("#verifica").show();
                     });
                 }
             });
@@ -70,7 +63,7 @@ $(()=>{
             });
             insert.done(function (serverData){
                 window.location = "index.html";
-
+                
             });
 
         }

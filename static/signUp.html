@@ -18,21 +18,65 @@
   	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
   	<script type="text/javascript" src="js/libreria.js"></script>
   	<script type="text/javascript" src="js/indexReg.js"></script>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>Benvenuto</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+	<script type="text/javascript" src="js/libreria.js"></script>
+	<script type="text/javascript" src="js/indexLog.js"></script>
+
+	<meta content="" name="description">
+	<meta content="" name="keywords">
+
+	<!-- Favicons -->
+	<link href="img/palla-da-tennis-PhotoRoom.png-PhotoRoom.png" rel="icon">
+	<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+	<!-- Vendor CSS Files -->
+	<link href="vendor/aos/aos.css" rel="stylesheet">
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+	<link href="vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+	<link href="vendor/remixicon/remixicon.css" rel="stylesheet">
+	<link href="vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+	<link href="css/style.css" rel="stylesheet">
+	<script src="js/jquery.js"></script>
 </head>
 <body class="form-v7">
+<header id="header" class="fixed-top d-flex align-items-center header-transparent">
+	<div class="container d-flex align-items-center justify-content-between">
+
+		<div class="logo">
+			<a href="index.html" ><img src="img/logo.png" alt="" class="img-fluid"><label>SMASHSPHERE</label></a>
+		</div>
+
+		<nav id="navbar" class="navbar">
+			<ul>
+				<li><a class="nav-link " id="tagLogin" href="#hero"> Esci </a></li>
+			</ul>
+			<i class="bi bi-list mobile-nav-toggle"></i>
+		</nav><!-- .navbar -->
+
+	</div>
+	<br><br><br><br>
+	<br><br><br><br>
+</header><!-- End Header -->
 	<div class="page-content">
 		<div class="form-v7-content" id="registra">
-			<div class="form-left">
-				<img src="Registra/images/back.webp" alt="form">
-				<h1 class="text-1 word flicker">REGISTRATI</h1>
-			</div>
 			<form class="form-detail" action="#" method="post" id="myform">
 				<div class="form-row">
 					<label for="txtNome">NOME</label>
 					<input type="text" name="nome" id="txtNome" class="input-text" required>
 				</div>
 				<div class="form-row">
-					<label for="Cognome">COGNOME</label>
+					<label for="txtCognome">COGNOME</label>
 					<input type="text" name="cognome" id="txtCognome" class="input-text" required>
 				</div>
 				<div class="form-row">
@@ -51,12 +95,14 @@
 					<label for="txtPassword" >PASSWORD</label>
 					<input type="password" name="password" id="txtPassword" class="input-text" required>
 				</div>
+				<br>
 				<div class="form-row">
 					<label for="comfirm_password">CONFIRM PASSWORD</label>
 					<input type="password" name="comfirm_password" id="comfirm_password" class="input-text" required>
 				</div>
+				<br>
 				<div class="form-row-last">
-					<button id="btnRegistra" data-bs-toggle="modal" data-bs-target="#modalVerifica">Registrati</button>
+					<button id="btnRegistra" data-bs-toggle="modal">Registrati</button>
 					<button id="btnAnnulla">Annulla</button>
 					<div class="modal fade" id="modalVerifica" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -77,10 +123,8 @@
 						</div>
 					  </div>
 				</div>
-				
 			</form>
 		</div>
-		
 	</div>
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>

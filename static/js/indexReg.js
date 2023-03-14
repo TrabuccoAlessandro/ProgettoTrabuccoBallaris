@@ -17,7 +17,7 @@ $(()=>{
                 console.log(jqXHR);
             });
             ctrlUser.done(function (serverData){
-                if(serverData == "" && $("#txtMail").val() != "" && $("#txtCognome").val()!="" && $("#txtNome").val()!="" && $("#txtPassword").val()!=""&& $("#txtData").val()!="")
+                if(serverData == "" && $("#txtMail").val() != "" && $("#txtCognome").val()!="" && $("#txtNome").val()!="" && $("#txtPassword").val()!=""&& $("#txtData").val()!="" && $("#txtPassword").val() == $("#comfirm_password").val())
                 {
                     let id = sendRequestNoCallback("/api/getId","GET",{});
                     id.fail(function (jqXHR) {
@@ -43,14 +43,12 @@ $(()=>{
                         });
                         verificaCodice.done(function (serverData){
                             console.log(serverData);
+                            $("#modalVerifica").modal("show");
                         });
                     });
                 }
             });
         }
-        else
-            alert("Inserisci tutti i campi");
-
 
     })
 

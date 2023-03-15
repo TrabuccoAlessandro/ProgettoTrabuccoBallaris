@@ -188,101 +188,25 @@ app.post("/api/codiceVer",function (req,res){
             " <! View in Browser Link --> \n" +
             "      \n" +
             "<div id=\"email\">\n" +
-            "      <table align=\"right\" role=\"presentation\">\n" +
-            "        <tr>\n" +
-            "          <td>\n" +
-            "          <a class=\"subtle-link\" href=\"#\">View in Browser</a>\n" +
-            "          </td>\n" +
-            "          <tr>\n" +
-            "      </table>\n" +
-            "  \n" +
-            "  \n" +
             "  <! Banner --> \n" +
             "         <table role=\"presentation\" width=\"100%\">\n" +
             "            <tr>\n" +
             "         \n" +
-            "              <td bgcolor=\"#00A4BD\" align=\"center\" style=\"color: white;\">\n" +
+            "              <td bgcolor=\"#20b2aa\" align=\"center\" style=\"color: white;\">\n" +
             "            \n" +
-            "             <img alt=\"Flower\" src=\"https://hs-8886753.f.hubspotemail.net/hs/hsstatic/TemplateAssets/static-1.60/img/hs_default_template_images/email_dnd_template_images/ThankYou-Flower.png\" width=\"400px\" align=\"middle\">\n" +
+            "             <img src=\"static/img/logo.png\" width=\"400px\" align=\"middle\">\n" +
             "                \n" +
-            "                <h1>Ecco il codice "+cod+" </h1>\n" +
+            "                <h1>Ecco il codice di verifica "+cod+" </h1>\n" +
             "                \n" +
             "              </td>\n" +
             "        </table>\n" +
-            "  \n" +
-            "  \n" +
-            "  \n" +
-            "  \n" +
-            "    <! First Row --> \n" +
-            "  \n" +
-            "  <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"10px\" style=\"padding: 30px 30px 30px 60px;\">\n" +
-            "     <tr>\n" +
-            "       <td>\n" +
-            "        <h2> Lorem ipsum dolor sit amet</h2>\n" +
-            "            <p>\n" +
-            "              Ut eget semper libero. Vestibulum non maximus nisl, ut iaculis ante. Nunc arcu elit, cursus eget urna et, tempus aliquam eros. Ut eget semper libero. Vestibulum non maximus nisl, ut iaculis ante. Nunc arcu elit, cursus eget urna et, tempus aliquam eros.  \n" +
-            "            </p>\n" +
-            "                <button> \n" +
-            "                  Button 1\n" +
-            "                </button>\n" +
-            "          </td> \n" +
-            "          </tr>\n" +
-            "                 </table>\n" +
-            "  \n" +
-            "  <! Second Row with Two Columns--> \n" +
-            "  \n" +
-            "    <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"10px\" width=\"100%\" style=\"padding: 30px 30px 30px 60px;\">\n" +
-            "      <tr>\n" +
-            "          <td> \n" +
-            "           <img alt=\"Blog\" src=\"https://www.hubspot.com/hubfs/assets/hubspot.com/style-guide/brand-guidelines/guidelines_sample-illustration-3.svg\" width=\"200px\" align=\"middle\">\n" +
-            "            \n" +
-            "         <h2> Vivamus ac elit eget </h2>\n" +
-            "            <p>\n" +
-            "              Vivamus ac elit eget dolor placerat tristique et vulputate nibh. Sed in elementum nisl, quis mollis enim. Etiam gravida dui vel est euismod, at aliquam ipsum euismod. \n" +
-            "      \n" +
-            "              </p>\n" +
-            "  \n" +
-            "          </td>\n" +
-            "        \n" +
-            "          <td>\n" +
-            "            \n" +
-            "            <img alt=\"Shopping\" src=\"https://www.hubspot.com/hubfs/assets/hubspot.com/style-guide/brand-guidelines/guidelines_sample-illustration-5.svg\" width=\"200px\" align=\"middle\">\n" +
-            "         <h2> Suspendisse tincidunt iaculis </h2>\n" +
-            "            <p>\n" +
-            "              Suspendisse tincidunt iaculis fringilla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras laoreet elit purus, quis pulvinar ipsum pulvinar et. \n" +
-            "      \n" +
-            "              </p> \n" +
-            "          </td>\n" +
-            "          </tr>\n" +
-            "      \n" +
-            "            <tr>\n" +
-            "              <td> <button> Button 2 </button> </td> \n" +
-            "              <td> <button> Button 3 </button> </td> \n" +
-            "              \n" +
-            "  </table>\n" +
-            "     \n" +
-            "        <! Banner Row --> \n" +
-            "  <table role=\"presentation\" bgcolor=\"#EAF0F6\" width=\"100%\" style=\"margin-top: 50px;\" >\n" +
-            "      <tr>\n" +
-            "          <td align=\"center\" style=\"padding: 30px 30px;\">\n" +
-            "            \n" +
-            "         <h2> Nullam porta arcu </h2>\n" +
-            "            <p>\n" +
-            "              Nam vel lobortis lorem. Nunc facilisis mauris at elit pulvinar, malesuada condimentum erat vestibulum. Pellentesque eros tellus, finibus eget erat at, tempus rutrum justo. \n" +
-            "      \n" +
-            "              </p>\n" +
-            "              <a href=\"#\"> Ask us a question</a>      \n" +
-            "          </td>\n" +
-            "          </tr>\n" +
-            "      </table>\n" +
-            "  \n" +
             "        <! Unsubscribe Footer --> \n" +
             "      \n" +
             "  <table role=\"presentation\" bgcolor=\"#F5F8FA\" width=\"100%\" >\n" +
             "      <tr>\n" +
             "          <td align=\"left\" style=\"padding: 30px 30px;\">\n" +
-            "            <p style=\"color:#99ACC2\"> Made with &hearts; at HubSpot HQ </p>\n" +
-            "              <a class=\"subtle-link\" href=\"#\"> Unsubscribe </a>      \n" +
+            "            <p style=\"color:#99ACC2\"> CREATE BY TRABUCCO-BALLARIS </p>\n" +
+            "              <a class=\"subtle-link\" href=\"#\"> SMASHSPHERE</a>      \n" +
             "          </td>\n" +
             "          </tr>\n" +
             "      </table> \n" +

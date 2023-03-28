@@ -449,7 +449,10 @@ h6 {
   color: #fff;
   border-bottom: 4px solid #1acc8d;
 }
-
+#titoloProfilo span{
+  color: #fff;
+  border-bottom: 4px solid #1acc8d;
+}
 #hero h2 {
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 40px;
@@ -676,7 +679,14 @@ section {
   font-family: "Poppins", sans-serif;
   color: #010483;
 }
-
+.titoloPren{
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+  color: #cdcdd1;
+}
 /*--------------------------------------------------------------
 # Breadcrumbs
 --------------------------------------------------------------*/
@@ -1036,6 +1046,7 @@ section {
 }
 
 .gallery .gallery-item img {
+  height: 200px;
   transition: all ease-in-out 0.4s;
 }
 

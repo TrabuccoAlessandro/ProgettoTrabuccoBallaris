@@ -51,7 +51,7 @@ $(()=>{
         for (let i=0;i<data.length;i++)
         {
         
-            let divCard=$("<div class='col-lg-12 col-md-12 col-sm-12'>"+
+            let divCard=$("<div class='col'>"+
               "<div class='our_solution_category'>"+
                 "<div class='solution_cards_box'>"+
                   "<div class='solution_card'>"+
@@ -61,13 +61,13 @@ $(()=>{
                       "<h3>Prenotazione "+data[i]._id+"</h3>"+
                     "</div>"+
                     "<div class='solu_description'>"+
-                      "<p id='idPren'>"+
+                      "<p id='idPren"+i+"'>"+
                       "</p>"+
-                      "<p id='idPrenotante'>"+
+                      "<p id='idPrenotante"+i+"'>"+
                       "</p>"+
-                      "<p id='idCampo'>"+
+                      "<p id='idCampo"+i+"'>"+
                       "</p>"+
-                      "<p id='data'>"+
+                      "<p id='data"+i+"'>"+
                       "</p>"+
                       "<button type='button' class='read_more_btn'>Read More</button>"+
                     "</div>"+
@@ -80,10 +80,9 @@ $(()=>{
             "</div>"+
           "</div>");
           $("#divCard").append(divCard);
-          $("#idPren").html("ID prenotazione: "+data[i]._id);
-          $("#idPrenotante").html("Nome: "+payload[i].nome);
+          $("#idPrenotante"+i).html("Nome: "+payload.nome);
           //$("#idCampo").html(data[0].idCampo);
-          $("#data").html("Data prenotazione: "+data[i].DataPrenotazione);
+          $("#data"+i).html("Data prenotazione: "+data[i].DataPrenotazione);
         }
         
     }

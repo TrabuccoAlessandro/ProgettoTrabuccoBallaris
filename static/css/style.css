@@ -1995,7 +1995,7 @@ h6 {
 }
 
 .our_solution_category {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
 }

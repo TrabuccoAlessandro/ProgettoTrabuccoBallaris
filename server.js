@@ -84,7 +84,7 @@ app.get("/api/ctrlSession", function (req, res) {
 app.get("/api/Prenotazioni", function (req, res) {
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {
-            let query = {_id:payload.id}
+            let query = {idPrenotante:payload.id}
             mongoFunctions.find("prova","Prenotazioni",query,function (err,data){
                 res.send(data);
                 console.log(data);

@@ -1,7 +1,7 @@
 "use strict"
 $(()=>{
     $("#Login").hide();
-
+    //$("#wrapper").hide();
     localStorage.setItem("token", "corrupted");
 
     document.getElementById("tagLogin").addEventListener("click",function (){
@@ -29,8 +29,8 @@ $(()=>{
         let user = $("#userLo").val();
         let password = $("#pwdLo").val();
         $("#labelLog").html("");
+        //$("#wrapper").show();
         let loginReq=sendRequestNoCallback("/api/login","POST",{username:user,pwd:password});
-        
         loginReq.done(function (serverData){
             serverData = JSON.parse(serverData);
             localStorage.setItem("token", serverData.token);

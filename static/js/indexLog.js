@@ -1,6 +1,23 @@
 "use strict"
 $(()=>{
-
+  let wrapper=$("<div id='wrapper'>"+
+  "<div class='circle'></div>"+
+  "<div class='circle'></div>"+
+  "<div class='circle'></div>"+
+  "<div class='shadow'></div>"+
+  "<div class='shadow'></div>"+
+  "<div class='shadow'></div>"+
+"</div>");
+  $("#body").append(wrapper);
+  $("#contenitore").hide();
+  $("#footer").hide();
+  $("#prenota").hide();
+  setTimeout(function() {
+    $("#footer").show();
+    $("#prenota").show();
+    $("#contenitore").fadeIn();
+    wrapper.hide();
+  }, 3000);
     if(localStorage.getItem("token") !="corrupted")
     {
         let tokenPreso = localStorage.getItem("token");
@@ -28,8 +45,36 @@ $(()=>{
             });
             Prenotazioni.done(function(serverData){
                 caricaPrenotazioni(JSON.parse(serverData),payload);
-            })
-            
+            });
+            $("#txtNome").val(payload.nome);
+            $("#txtCognome").val(payload.cognome);
+            $("#txtMail").val(payload.mail);
+            document.getElementById("btnPrenota").addEventListener("click",function (){
+              let prenot={};
+              
+              let id = sendRequestNoCallback("/api/getIdPren","GET",{});
+              id.fail(function (jqXHR) {
+                  error(jqXHR);
+              });
+              id.done(function (serverData){
+                serverData = JSON.parse(serverData);
+                let id = parseInt(serverData) +1;
+                prenot._id = parseInt(id);
+                prenot.Nome=payload.nome;
+                prenot.Cognome=payload.cognome;
+                prenot.Mail=payload.mail;
+                prenot.Data=$("#txtData").val();
+                prenot.Ora=$("#txtOra").val();
+                let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
+                insert.fail(function (jqXHR) {
+                error(jqXHR);
+                });
+                insert.done(function (serverData){
+                    alert("Prenotazione ok");
+                    //window.location="loginOk.html";
+                });
+              });
+            });
         });
     }
     document.getElementById("tagLogin").addEventListener("click",function (){

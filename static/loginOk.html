@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Benvenuto</title>
+  <title>Benvenuto su SmashSphere</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
@@ -37,6 +37,8 @@
 </head>
 
 <body id="body">
+  <div id="contenitore">
+
 <!-- ======= Header ======= -->
 <header id="header" class="fixed-top d-flex align-items-center header-transparent">
   <div class="container d-flex align-items-center justify-content-between">
@@ -106,8 +108,6 @@
       </div>
     </div>
   </div>
-  </div>
-
   <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
     <defs>
       <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
@@ -122,13 +122,24 @@
       <use xlink:href="#wave-path" x="50" y="9" fill="#fff">
     </g>
   </svg>
+  </div>
 
 </section><!-- End Hero -->
 <!-- ======= Hero Section ======= -->
 
 <main id="main">
 <!--Inizio sezione campi-->
-<br><br><br><br><br>
+<br><br><br><br>
+<form id="prenota" class="form col-5" data-aos="fade-left">
+  <p class="heading">Login</p>
+  <input class="input" id="txtNome" placeholder="Nome" type="text" required="">
+  <input class="input" id="txtCognome" placeholder="Cognome" type="text" required=""> 
+  <input class="input" id="txtMail" placeholder="Email" type="email" required=""> 
+  <input class="input" id="txtData" placeholder="" type="date" required="">
+  <input class="input" id="txtOra" placeholder="" type="time" required=""> 
+  <button class="btn" id="btnPrenota">Prenota</button>
+</form>
+<br><br><br>
 <div class="section_our_solution container" id="prenota">
   <div class="section-title" data-aos="fade-up">
     <h2>Prenotazioni</h2>
@@ -160,7 +171,7 @@
   </div>
 </main>
 <!-- End #main -->
-
+<br><br>
 <!-- ======= Footer ======= -->
 <footer id="footer">
 
@@ -175,8 +186,7 @@
 </footer><!-- End Footer -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-<div id="preloader"></div>
-
+</div>
 <!-- Vendor JS Files -->
 <script src="vendor/purecounter/purecounter_vanilla.js"></script>
 <script src="vendor/aos/aos.js"></script>

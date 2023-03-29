@@ -65,7 +65,16 @@ app.get("/api/getId", function (req, res) {
         }
     });
 });
-
+app.get("/api/getIdPren", function (req, res) {
+    mongoFunctions.conta( "prova", "Prenotazioni", {}, function (err, data) {
+        if (err.codErr == -1) {
+            res.send(data.toString());
+        }
+        else{
+            error(req, res, {code:err.codErr, message:err.message});
+        }
+    });
+});
 app.get("/api/ctrlSession", function (req, res) {
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {
@@ -105,6 +114,13 @@ console.log(query);
         res.send(data);
     })
 })
+app.post("/api/Prenota",function (req,res){
+    let query = req.body;
+    console.log(query);
+        mongoFunctions.insertOne("prova","Prenotazioni",query,function (err,data){
+            res.send(data);
+        })
+    })
 
 app.post("/api/ctrlUser", function (req, res) {
     let query = { User: req.body.username };

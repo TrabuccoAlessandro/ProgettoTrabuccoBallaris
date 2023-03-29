@@ -50,6 +50,7 @@ app.post("/api/login", function (req, res) {
             res.send(data);
         }
         else{
+            console.log(err);
             error(req, res, {code:err.codErr, message:err.message});
         }
     });
@@ -115,11 +116,18 @@ console.log(query);
     })
 })
 app.post("/api/Prenota",function (req,res){
-    let query = req.body;
-    console.log(query);
-        mongoFunctions.insertOne("prova","Prenotazioni",query,function (err,data){
-            res.send(data);
-        })
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = req.body;
+            console.log(query);
+            mongoFunctions.insertOne("prova","Prenotazioni",query,function (err,data){
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
     })
 
 app.post("/api/ctrlUser", function (req, res) {

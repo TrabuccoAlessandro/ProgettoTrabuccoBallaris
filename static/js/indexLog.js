@@ -17,7 +17,7 @@ $(()=>{
     $("#prenota").show();
     $("#contenitore").fadeIn();
     wrapper.hide();
-  }, 3000);
+  }, 5000);
     if(localStorage.getItem("token") !="corrupted")
     {
         let tokenPreso = localStorage.getItem("token");
@@ -25,17 +25,7 @@ $(()=>{
         let controlloSessione = sendRequestNoCallback("/api/ctrlSession","GET",{});
         controlloSessione.fail(function (jqXHR){
             error(jqXHR);
-            localStorage.setItem("token", "corrupted");
-            localStorage.setItem("user",null);
-            $("#ModalErrore").modal("show");
-            $("#exampleModalLabel").html("ATTENZIONE!!");
-            $("#modalBody").html("TOKEN SCADUTO O CORROTTO!!");
-            $("#ModalErrore").on("hidden.bs.modal", function(){
-                window.location.href = "index.html";
-            });
-            $("#modalClose").on("click", function(){
-                window.location.href = "index.html";
-            });
+            modal();
         });
         controlloSessione.done(function (serverData){
             caricaProfilo(JSON.parse(serverData));
@@ -45,35 +35,9 @@ $(()=>{
             });
             Prenotazioni.done(function(serverData){
                 caricaPrenotazioni(JSON.parse(serverData),payload);
-            });
-            $("#txtNome").val(payload.nome);
-            $("#txtCognome").val(payload.cognome);
-            $("#txtMail").val(payload.mail);
-            document.getElementById("btnPrenota").addEventListener("click",function (){
-              let prenot={};
-              
-              let id = sendRequestNoCallback("/api/getIdPren","GET",{});
-              id.fail(function (jqXHR) {
-                  error(jqXHR);
-              });
-              id.done(function (serverData){
-                serverData = JSON.parse(serverData);
-                let id = parseInt(serverData) +1;
-                prenot._id = parseInt(id);
-                prenot.Nome=payload.nome;
-                prenot.Cognome=payload.cognome;
-                prenot.Mail=payload.mail;
-                prenot.Data=$("#txtData").val();
-                prenot.Ora=$("#txtOra").val();
-                let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
-                insert.fail(function (jqXHR) {
-                error(jqXHR);
-                });
-                insert.done(function (serverData){
-                    alert("Prenotazione ok");
-                    //window.location="loginOk.html";
-                });
-              });
+                $("#txtNome").val(payload.nome);
+                $("#txtCognome").val(payload.cognome);
+                $("#txtMail").val(payload.mail);
             });
         });
     }
@@ -84,6 +48,34 @@ $(()=>{
         window.location.href = "index.html";
     });
 
+        document.getElementById("btnPrenota").addEventListener("click",function (){
+        $('html,body').css('cursor','wait');
+        let prenot={};
+        let id = sendRequestNoCallback("/api/getIdPren","GET",{});
+        id.fail(function (jqXHR) {
+            error(jqXHR);
+        });
+        id.done(function (serverData){
+            let pay = parseJwt(localStorage.getItem("token"));
+            serverData = JSON.parse(serverData);
+            let id = parseInt(serverData) +1;
+            console.log(pay);
+            prenot._id = parseInt(id);
+            prenot.idPrenotante = pay.id;
+            prenot.DataPrenotazione=$("#txtData").val();
+            prenot.Ora=$("#txtOra").val();
+            let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
+            insert.fail(function (jqXHR) {
+                error(jqXHR);
+                modal();
+            });
+            insert.done(function (serverData){
+                window.location="loginOk.html";
+            });
+
+        });
+    });
+
     function caricaProfilo(data){
         $("#userProfilo").html(data.User);
         $("#nomeProfilo").html(data.Nome);
@@ -91,11 +83,23 @@ $(()=>{
         $("#dataProfilo").html(data.DataNascita);
         $("#mailProfilo").html(data.Mail);
     }
+
+    function modal (){
+        localStorage.setItem("token", "corrupted");
+        $("#ModalErrore").modal("show");
+        $("#exampleModalLabel").html("ATTENZIONE!!");
+        $("#modalBody").html("TOKEN SCADUTO O CORROTTO!!");
+        $("#ModalErrore").on("hidden.bs.modal", function(){
+            window.location.href = "index.html";
+        });
+        $("#modalClose").on("click", function(){
+            window.location.href = "index.html";
+        });
+    }
     function caricaPrenotazioni(data,payload){
         console.log(data);
         for (let i=0;i<data.length;i++)
         {
-        
             let divCard=$("<div class='col'>"+
               "<div class='our_solution_category'>"+
                 "<div class='solution_cards_box'>"+

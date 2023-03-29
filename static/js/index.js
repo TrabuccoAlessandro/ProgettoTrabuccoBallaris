@@ -26,6 +26,7 @@ $(()=>{
 })
 
     document.getElementById("signIn").addEventListener("click",function (){
+        $('html,body').css('cursor','wait');
         let user = $("#userLo").val();
         let password = $("#pwdLo").val();
         $("#labelLog").html("");

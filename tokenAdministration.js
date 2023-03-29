@@ -49,7 +49,7 @@ tokenAdministration.prototype.createToken = function (user){
         "nome":user.Nome,
         "mail":user.Mail,
         "admin":user.Admin,
-        "exp":Math.floor(Date.now()/1000 + 10)
+        "exp":Math.floor(Date.now()/1000 + 30)
     },this.privateKey);
     console.log("Creato nuovo token: " + this.token);
 }

@@ -666,6 +666,7 @@ h6 {
 #titoloProfilo span{
   color: #fff;
   border-bottom: 4px solid #1acc8d;
+  font-size: 30pt;
 }
 #hero h2 {
   color: rgba(255, 255, 255, 0.8);

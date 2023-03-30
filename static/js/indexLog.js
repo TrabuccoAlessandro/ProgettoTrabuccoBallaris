@@ -74,6 +74,7 @@ $(()=>{
           let id = sendRequestNoCallback("/api/getIdPren","GET",{});
           id.fail(function (jqXHR) {
               error(jqXHR);
+              $('html,body').css('cursor','default');
           });
           id.done(function (serverData){
               let pay = parseJwt(localStorage.getItem("token"));
@@ -87,6 +88,7 @@ $(()=>{
               let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
               insert.fail(function (jqXHR) {
                   error(jqXHR);
+                  $('html,body').css('cursor','default');
                   modal();
               });
               insert.done(function (serverData){

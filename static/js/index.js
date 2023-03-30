@@ -42,6 +42,7 @@ $(()=>{
         });
         loginReq.fail(function (jqXHR){
             $("#labelLog").html("ERRORE LOGIN");
+            $('html,body').css('cursor','default');
         });
     })
 

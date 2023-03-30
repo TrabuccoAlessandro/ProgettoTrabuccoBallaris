@@ -1,22 +1,28 @@
 "use strict"
 $(()=>{
-  let wrapper=$("<div id='wrapper' class='col-12'>"+
+  let wrapper=$("<center><div id='wrapper' class='col-12'>"+
   "<div class='circle'></div>"+
   "<div class='circle'></div>"+
   "<div class='circle'></div>"+
   "<div class='shadow'></div>"+
   "<div class='shadow'></div>"+
   "<div class='shadow'></div>"+
-"</div>");
+"</div> </center>");
   $("#body").append(wrapper);
   $("#contenitore").hide();
   $("#footer").hide();
   $("#prenota").hide();
   $("#divCampi").hide();
-  setTimeout(function() {
+  $("#ContCampi").hide();
+  $("#campi").hide();
+  $("#prenotazioni").hide();
+    setTimeout(function() {
     $("#footer").show();
     $("#prenota").show();
     $("#divCampi").show();
+    $("#ContCampi").show();
+    $("#prenotazioni").show();
+    $("#campi").show();
     $("#contenitore").fadeIn();
     wrapper.hide();
   }, 5000);

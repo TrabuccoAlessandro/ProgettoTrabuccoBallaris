@@ -107,6 +107,22 @@ app.get("/api/Prenotazioni", function (req, res) {
     });
 });
 
+app.get("/api/visualCampi", function (req, res) {
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = {}
+            mongoFunctions.find("prova","campi",query,function (err,data){
+                res.send(data);
+                console.log(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
+});
+
 app.post("/api/Registrazione",function (req,res){
 let query = req.body;
 query.Key = bcrypt.hashSync(query.Key,12);

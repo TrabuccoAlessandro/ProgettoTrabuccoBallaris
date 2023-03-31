@@ -63,43 +63,6 @@ $(()=>{
         window.location.href = "index.html";
     });
 
-        document.getElementById("btnPrenota").addEventListener("click",function (event){
-        if($("#txtNome").val()==null || $("#txtCognome").val()==null || $("#txtMail").val()=="" || $("#txtData").val()=="" || $("#txtOra").val()=="")
-            document.getElementById("btnPrenota").removeEventListener("click",function(){});
-        else
-        {
-          event.preventDefault();
-          $('html,body').css('cursor','wait');
-          let prenot={};
-          let id = sendRequestNoCallback("/api/getIdPren","GET",{});
-          id.fail(function (jqXHR) {
-              error(jqXHR);
-              $('html,body').css('cursor','default');
-          });
-          id.done(function (serverData){
-              let pay = parseJwt(localStorage.getItem("token"));
-              serverData = JSON.parse(serverData);
-              let id = parseInt(serverData) +1;
-              console.log(pay);
-              prenot._id = parseInt(id);
-              prenot.idPrenotante = pay.id;
-              prenot.DataPrenotazione=$("#txtData").val();
-              prenot.Ora=$("#txtOra").val();
-              let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
-              insert.fail(function (jqXHR) {
-                  error(jqXHR);
-                  $('html,body').css('cursor','default');
-                  modal();
-              });
-              insert.done(function (serverData){
-                  window.location="loginOk.html";
-              });
-  
-          });
-        }
-        
-    });
-
     function caricaProfilo(data){
         $("#userProfilo").html(data.User);
         $("#nomeProfilo").html(data.Nome);
@@ -158,6 +121,7 @@ $(()=>{
           $("#data"+i).html("Data prenotazione: "+data[i].DataPrenotazione);
         }
         
+  
     }
     function caricaCampi(serverData)
     {
@@ -175,15 +139,59 @@ $(()=>{
                     "<p id='idTipologia"+i+"'></p>"+
                     "<p id='idPrezzo"+i+"'></p>"+
                     "<p id='idCittà"+i+"'></p>"+
-                "<center><button className='btnPrenota' id='btnPrenota'> PRENOTA </button></center>"+
-                "</div>"+
+                "<center><button class='btn btn-collapse' type='button' id='btnPrenota' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
+                "<div class='collapse' id='collapseExample"+i+"'>"+
+                  "<div class='card card-body'>"+
+                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+
+                  "</div>"+
+               "</div>"+
+              "</div>"+
             "</div>"+
           "</div>");
           $("#ContCampi").append(divCampi);
           $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
           $("#idPrezzo"+i).html("Prezzo ad ora: "+serverData[i].PrezzoOrario+" €");
           $("#idCittà"+i).html("Città: "+serverData[i].Città);
+          
+          document.getElementById("btnPrenota").addEventListener("click",function (event){
+            $("#divCampi").height(600);
+            /*if($("#txtNome").val()==null || $("#txtCognome").val()==null || $("#txtMail").val()=="" || $("#txtData").val()=="" || $("#txtOra").val()=="")
+                document.getElementById("btnPrenota").removeEventListener("click",function(){});
+            else
+            {
+              event.preventDefault();
+              $('html,body').css('cursor','wait');
+              let prenot={};
+              let id = sendRequestNoCallback("/api/getIdPren","GET",{});
+              id.fail(function (jqXHR) {
+                  error(jqXHR);
+                  $('html,body').css('cursor','default');
+              });
+              id.done(function (serverData){
+                  let pay = parseJwt(localStorage.getItem("token"));
+                  serverData = JSON.parse(serverData);
+                  let id = parseInt(serverData) +1;
+                  console.log(pay);
+                  prenot._id = parseInt(id);
+                  prenot.idPrenotante = pay.id;
+                  prenot.DataPrenotazione=$("#txtData").val();
+                  prenot.Ora=$("#txtOra").val();
+                  let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
+                  insert.fail(function (jqXHR) {
+                      error(jqXHR);
+                      $('html,body').css('cursor','default');
+                      modal();
+                  });
+                  insert.done(function (serverData){
+                      window.location="loginOk.html";
+                  });
+      
+              });
+            }*/
+            
+        });
         }
+
     }
     function parseJwt(token) {
         let payload = token.split(".")[1];
@@ -191,3 +199,4 @@ $(()=>{
         return JSON.parse(window.atob(payload));
     }
 });
+

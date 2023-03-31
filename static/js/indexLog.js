@@ -175,6 +175,7 @@ $(()=>{
                     "<p id='idTipologia"+i+"'></p>"+
                     "<p id='idPrezzo"+i+"'></p>"+
                     "<p id='idCittà"+i+"'></p>"+
+                "<center><button className='btnPrenota' id='btnPrenota'> PRENOTA </button></center>"+
                 "</div>"+
             "</div>"+
           "</div>");

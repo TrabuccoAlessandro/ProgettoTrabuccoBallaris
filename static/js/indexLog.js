@@ -47,20 +47,29 @@ $(()=>{
                 $("#txtCognome").val(payload.cognome);
                 $("#txtMail").val(payload.mail);
             });
+            let visualCampi=sendRequestNoCallback("/api/visualCampi","GET",{});
+            visualCampi.fail(function(jqXHR){
+                error(jqXHR);
+            });
+            visualCampi.done(function(serverData){
+                caricaCampi(JSON.parse(serverData));
+            })
         });
-        let visualCampi=sendRequestNoCallback("/api/visualCampi","GET",{});
-        visualCampi.fail(function(jqXHR){
-          error(jqXHR);
-        });
-        visualCampi.done(function(serverData){
-          caricaCampi(JSON.parse(serverData));
-        })
+
     }
     document.getElementById("tagLogin").addEventListener("click",function (){
         // Logout
         localStorage.setItem("token", "corrupted");
         localStorage.setItem("user",null);
         window.location.href = "index.html";
+    });
+    document.getElementById("btnAdmin").addEventListener("click",function (){
+        let tokenPreso = localStorage.getItem("token");
+        let payload = parseJwt(tokenPreso);
+        if (payload.admin == true)
+            window.location = "admin.html";
+        else
+            modal2();
     });
 
     function caricaProfilo(data){
@@ -81,6 +90,16 @@ $(()=>{
         });
         $("#modalClose").on("click", function(){
             window.location.href = "index.html";
+        });
+    }
+    function modal2 (){
+        $("#ModalErrore").modal("show");
+        $("#exampleModalLabel").html("ATTENZIONE!!");
+        $("#modalBody").html("NON HAI ACCESSO A QUESTA AREA");
+        $("#ModalErrore").on("hidden.bs.modal", function(){
+        });
+        $("#modalClose").on("click", function(){
+            $("#ModalErrore").modal("hide");
         });
     }
     function caricaPrenotazioni(data,payload){

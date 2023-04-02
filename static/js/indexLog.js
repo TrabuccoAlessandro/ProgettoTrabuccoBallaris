@@ -1,5 +1,6 @@
 "use strict"
 $(()=>{
+  
   let wrapper=$("<center><div id='wrapper' class='col-12'>"+
   "<div class='circle'></div>"+
   "<div class='circle'></div>"+
@@ -18,7 +19,7 @@ $(()=>{
   $("#prenotazioni").hide();
     setTimeout(function() {
     $("#footer").show();
-    $("#prenota").show();
+    //$("#prenota").show();
     $("#divCampi").show();
     $("#ContCampi").show();
     $("#prenotazioni").show();
@@ -43,16 +44,15 @@ $(()=>{
             });
             Prenotazioni.done(function(serverData){
                 caricaPrenotazioni(JSON.parse(serverData),payload);
-                $("#txtNome").val(payload.nome);
-                $("#txtCognome").val(payload.cognome);
-                $("#txtMail").val(payload.mail);
+                
             });
             let visualCampi=sendRequestNoCallback("/api/visualCampi","GET",{});
             visualCampi.fail(function(jqXHR){
                 error(jqXHR);
             });
             visualCampi.done(function(serverData){
-                caricaCampi(JSON.parse(serverData));
+                caricaCampi(JSON.parse(serverData),payload);
+                
             })
         });
 
@@ -142,13 +142,14 @@ $(()=>{
         
   
     }
-    function caricaCampi(serverData)
+    function caricaCampi(serverData,payload)
     {
         console.log(serverData);
         
         for (let i=0;i<serverData.length;i++)
-        {
-            let divCampi=$("<div class='flip-card' id='divCampi' data-aos='fade-left'>"+
+        {   
+            let IdCampo=serverData[i]._id;
+            let divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
             "<div class='flip-card-inner'>"+
                 "<div class='flip-card-front'>"+
                     "<p class='titleCampi'></p>"+
@@ -158,22 +159,77 @@ $(()=>{
                     "<p id='idTipologia"+i+"'></p>"+
                     "<p id='idPrezzo"+i+"'></p>"+
                     "<p id='idCittà"+i+"'></p>"+
-                "<center><button class='btn btn-collapse' type='button' id='btnPrenota' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
+                "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
                 "<div class='collapse' id='collapseExample"+i+"'>"+
                   "<div class='card card-body'>"+
-                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+
+                    "<form id='prenota' class='form' data-aos='fade-left'>"+
+                    "<input class='input' id='txtNome"+i+"' placeholder='Nome' type='text' required=''>"+
+                    "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+ 
+                    "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
+                    "<input class='input' id='txtData"+i+"' placeholder='' type='date' required=''>"+
+                    "<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
+                    "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
+                  "</form>"+
                   "</div>"+
                "</div>"+
               "</div>"+
             "</div>"+
           "</div>");
           $("#ContCampi").append(divCampi);
+          $("#txtNome"+i).val(payload.nome);
+          $("#txtCognome"+i).val(payload.cognome);
+          $("#txtMail"+i).val(payload.mail);
           $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
           $("#idPrezzo"+i).html("Prezzo ad ora: "+serverData[i].PrezzoOrario+" €");
           $("#idCittà"+i).html("Città: "+serverData[i].Città);
-          
-          document.getElementById("btnPrenota").addEventListener("click",function (event){
-            $("#divCampi").height(600);
+          let cont=0;
+          document.getElementById("btnPrenota"+i).addEventListener("click",function (){
+            cont++;
+            if(cont==1){
+                $("#divCampi"+i).height(700);
+                $("#divCampi"+i).width(300);
+            }
+            else{
+                $("#divCampi"+i).height(350);
+                $("#divCampi"+i).width(250);
+                cont=0;
+            }
+            document.getElementById("btnInviaPren"+i).addEventListener("click",function (event){
+                if($("#txtNome"+i).val()=="" || $("#txtCognome"+i).val()=="" || $("#txtMail"+i).val()=="" || $("#txtData"+i).val()=="" || $("#txtOra"+i).val()=="")
+                document.getElementById("btnInviaPren"+i).removeEventListener("click",function(){});
+                else
+                {
+                    event.preventDefault();
+                    $('html,body').css('cursor','wait');
+                    let prenot={};
+                    let id = sendRequestNoCallback("/api/getIdPren","GET",{});
+                    id.fail(function (jqXHR) {
+                        error(jqXHR);
+                        $('html,body').css('cursor','default');
+                    });
+                    id.done(function (serverData){
+                        let pay = parseJwt(localStorage.getItem("token"));
+                        serverData = JSON.parse(serverData);
+                        let id = parseInt(serverData) +1;
+                        console.log(pay);
+                        prenot._id = parseInt(id);
+                        prenot.idPrenotante = pay.id;
+                        prenot.idCampo=IdCampo;
+                        prenot.DataPrenotazione=$("#txtData"+i).val();
+                        prenot.Ora=$("#txtOra"+i).val();
+                        let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
+                        insert.fail(function (jqXHR) {
+                            error(jqXHR);
+                            $('html,body').css('cursor','default');
+                            modal();
+                        });
+                        insert.done(function (serverData){
+                            window.location="loginOk.html";
+                        });
+            
+                    });
+                }
+            })
             /*if($("#txtNome").val()==null || $("#txtCognome").val()==null || $("#txtMail").val()=="" || $("#txtData").val()=="" || $("#txtOra").val()=="")
                 document.getElementById("btnPrenota").removeEventListener("click",function(){});
             else
@@ -209,6 +265,7 @@ $(()=>{
             }*/
             
         });
+        
         }
 
     }

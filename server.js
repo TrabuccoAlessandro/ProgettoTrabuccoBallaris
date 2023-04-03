@@ -165,6 +165,21 @@ app.post("/api/Prenota",function (req,res){
         }
     });
     })
+
+app.post("/api/campiUpdate", function (req,res) {
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = req.body;
+            console.log(query);
+            mongoFunctions.updateOne("prova", "Campi", query, function (err, data) {
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, {code: 403, message: payload.message});
+        }
+    })
+});
 app.post("/api/ctrlPrenotazione",function (req,res){
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {

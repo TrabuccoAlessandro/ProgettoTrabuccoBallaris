@@ -102,6 +102,17 @@ $(()=>{
             $("#ModalErrore").modal("hide");
         });
     }
+
+    function modal3 (){
+        $("#ModalErrore").modal("show");
+        $("#exampleModalLabel").html("ATTENZIONE!!");
+        $("#modalBody").html("QUESTO CAMPO È GIÀ OCCUPATO");
+        $("#ModalErrore").on("hidden.bs.modal", function(){
+        });
+        $("#modalClose").on("click", function(){
+            $("#ModalErrore").modal("hide");
+        });
+    }
     function caricaPrenotazioni(data,payload){
         console.log(data);
         for (let i=0;i<data.length;i++)
@@ -137,7 +148,7 @@ $(()=>{
           $("#divCard").append(divCard);
           $("#idPrenotante"+i).html("Nome: "+payload.nome);
           //$("#idCampo").html(data[0].idCampo);
-          $("#data"+i).html("Data prenotazione: "+data[i].DataPrenotazione);
+          $("#data"+i).html("Data prenotazione: " + data[i].DataPrenotazione.split('T')[0].toString());
         }
         
   
@@ -168,6 +179,7 @@ $(()=>{
                     "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
                     "<input class='input' id='txtData"+i+"' placeholder='' type='date' required=''>"+
                     "<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
+                    "<input class='input' id='txtFine"+i+"' placeholder='' type='time' required=''>"+
                     "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
                   "</form>"+
                   "</div>"+
@@ -215,8 +227,25 @@ $(()=>{
                         prenot._id = parseInt(id);
                         prenot.idPrenotante = pay.id;
                         prenot.idCampo=IdCampo;
-                        prenot.DataPrenotazione=$("#txtData"+i).val();
-                        prenot.Ora=$("#txtOra"+i).val();
+                        let string = new Date($("#txtData"+i).val().toString() + " " + $("#txtOra"+i).val().toString());
+                        prenot.Giorno = $("#txtData"+i).val();
+                        prenot.DataPrenotazione= string;
+                        console.log(string);
+                        string = new Date ($("#txtData"+i).val().toString() + " " + $("#txtFine"+i).val().toString())
+                        prenot.DataFine = string;
+                        console.log(string);
+                        console.log(prenot);
+
+                        let controlloInsert = sendRequestNoCallback("/api/ctrlPrenotazione","POST",prenot);
+                        controlloInsert.fail(function (jqXHR) {
+                            error(jqXHR);
+                            $('html,body').css('cursor','default');
+                            modal();
+                        });
+                        controlloInsert.done(function (serverData){
+                            console.log(serverData);
+                        });
+                        /*
                         let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
                         insert.fail(function (jqXHR) {
                             error(jqXHR);
@@ -225,45 +254,11 @@ $(()=>{
                         });
                         insert.done(function (serverData){
                             window.location="loginOk.html";
-                        });
+                        });*/
             
                     });
                 }
             })
-            /*if($("#txtNome").val()==null || $("#txtCognome").val()==null || $("#txtMail").val()=="" || $("#txtData").val()=="" || $("#txtOra").val()=="")
-                document.getElementById("btnPrenota").removeEventListener("click",function(){});
-            else
-            {
-              event.preventDefault();
-              $('html,body').css('cursor','wait');
-              let prenot={};
-              let id = sendRequestNoCallback("/api/getIdPren","GET",{});
-              id.fail(function (jqXHR) {
-                  error(jqXHR);
-                  $('html,body').css('cursor','default');
-              });
-              id.done(function (serverData){
-                  let pay = parseJwt(localStorage.getItem("token"));
-                  serverData = JSON.parse(serverData);
-                  let id = parseInt(serverData) +1;
-                  console.log(pay);
-                  prenot._id = parseInt(id);
-                  prenot.idPrenotante = pay.id;
-                  prenot.DataPrenotazione=$("#txtData").val();
-                  prenot.Ora=$("#txtOra").val();
-                  let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
-                  insert.fail(function (jqXHR) {
-                      error(jqXHR);
-                      $('html,body').css('cursor','default');
-                      modal();
-                  });
-                  insert.done(function (serverData){
-                      window.location="loginOk.html";
-                  });
-      
-              });
-            }*/
-            
         });
         
         }

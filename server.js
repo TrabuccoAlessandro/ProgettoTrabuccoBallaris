@@ -160,6 +160,23 @@ app.post("/api/Prenota",function (req,res){
         }
     });
     })
+app.post("/api/ctrlPrenotazione",function (req,res){
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let obj = req.body;
+            let giorno = obj.DataPrenotazione.split('T')[0];
+            console.log(giorno);
+            let query = {$and:[{Giorno: giorno},{idCampo:obj.idCampo},{DataPrenotazione :{$gte:new Date(obj.DataPrenotazione)}},{DataFine :{$lte:new Date(obj.DataFine)}}]};
+            console.log(query);
+            mongoFunctions.find("prova","Prenotazioni",query,function (err,data){
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
+})
 
 app.post("/api/ctrlUser", function (req, res) {
     let query = { User: req.body.username };

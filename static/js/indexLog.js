@@ -181,7 +181,7 @@ $(()=>{
                     "<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
                     "<input class='input' id='txtFine"+i+"' placeholder='' type='time' required=''>"+
                     "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
-                  "</form>"+
+                    "</form>"+
                   "</div>"+
                "</div>"+
               "</div>"+

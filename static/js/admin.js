@@ -75,7 +75,7 @@ $(()=>{
 
         for (let i=0;i<serverData.length;i++)
         {
-            let divCampi=$("<div class='flip-card' id='divCampi' data-aos='fade-left'>"+
+            let divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
                 "<div class='flip-card-inner'>"+
                 "<div class='flip-card-front'>"+
                 "<p class='titleCampi'></p>"+
@@ -85,10 +85,26 @@ $(()=>{
                 "<p id='idTipologia"+i+"'></p>"+
                 "<p id='idPrezzo"+i+"'></p>"+
                 "<p id='idCittà"+i+"'></p>"+
-                "<center><button class='btn btn-collapse' type='button' id='btnPrenota' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'>MODIFICA</button></center>"+
+                "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'>MODIFICA</button></center>"+
                 "<div class='collapse' id='collapseExample"+i+"'>"+
                 "<div class='card card-body'>"+
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+
+                    "<form id='prenota' class='form' data-aos='fade-left'>"+
+                    "<select id='selectTipo"+i+"' class='form-select' aria-label='Select'>"+
+                    "<option class='input' selected value='Terra'>Terra</option>"+
+                    "<option class='input' value='Sintetico'>Sintetico</option>"+
+                    "<option class='input' value='Palestra'>Palestra</option>"+
+                    "</select>"+
+                    "<input class='input' id='txtPrezzo"+i+"' placeholder='15' value='15' type='text' disabled>"+ 
+                    "<input class='input' id='txtCittà"+i+"' placeholder='Città' type='text' required=''> "+
+                    "<input class='input' id='txtPosizione"+i+"' placeholder='Via' type='text' required=''>"+
+                    "<select id='selectQualita"+i+"' class='form-select' aria-label='Select'>"+
+                    "<option class='input' selected value='Bronze'>Bronze</option>"+
+                    "<option class='input' value='Silver'>Silver</option>"+
+                    "<option class='input' value='Gold'>Gold</option>"+
+                    "</select>"+
+                    "<input class='input' id='txtFine"+i+"' placeholder='' type='time' required=''>"+
+                    "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
+                    "</form>"+
                 "</div>"+
                 "</div>"+
                 "</div>"+
@@ -98,7 +114,19 @@ $(()=>{
             $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
             $("#idPrezzo"+i).html("Prezzo ad ora: "+serverData[i].PrezzoOrario+" €");
             $("#idCittà"+i).html("Città: "+serverData[i].Città);
-
+            let cont=0;
+            document.getElementById("btnPrenota"+i).addEventListener("click",function (){
+                cont++;
+                if(cont==1){
+                    $("#divCampi"+i).height(700);
+                    $("#divCampi"+i).width(300);
+                }
+                else{
+                    $("#divCampi"+i).height(350);
+                    $("#divCampi"+i).width(250);
+                    cont=0;
+                }
+            });
         }
 
     }

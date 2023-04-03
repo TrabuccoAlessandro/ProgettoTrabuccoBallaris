@@ -227,11 +227,11 @@ $(()=>{
                         prenot._id = parseInt(id);
                         prenot.idPrenotante = pay.id;
                         prenot.idCampo=IdCampo;
-                        let string = new Date($("#txtData"+i).val().toString() + " " + $("#txtOra"+i).val().toString());
+                        let string =$("#txtData"+i).val().toString() + " " + $("#txtOra"+i).val().toString();
                         prenot.Giorno = $("#txtData"+i).val();
                         prenot.DataPrenotazione= string;
                         console.log(string);
-                        string = new Date ($("#txtData"+i).val().toString() + " " + $("#txtFine"+i).val().toString())
+                        string = $("#txtData"+i).val().toString() + " " + $("#txtFine"+i).val().toString();
                         prenot.DataFine = string;
                         console.log(string);
                         console.log(prenot);
@@ -244,18 +244,26 @@ $(()=>{
                         });
                         controlloInsert.done(function (serverData){
                             console.log(serverData);
+                            if(serverData == "vuoto")
+                            {
+                                let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
+                                insert.fail(function (jqXHR) {
+                                    error(jqXHR);
+                                    $('html,body').css('cursor','default');
+                                    modal();
+                                });
+                                insert.done(function (serverData){
+                                    window.location="loginOk.html";
+                                });
+                            }
+                            else
+                            {
+                                $('html,body').css('cursor','default');
+                                modal3();
+                            }
+
                         });
-                        /*
-                        let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
-                        insert.fail(function (jqXHR) {
-                            error(jqXHR);
-                            $('html,body').css('cursor','default');
-                            modal();
-                        });
-                        insert.done(function (serverData){
-                            window.location="loginOk.html";
-                        });*/
-            
+
                     });
                 }
             })

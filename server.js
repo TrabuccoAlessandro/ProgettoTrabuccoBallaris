@@ -151,6 +151,11 @@ app.post("/api/Prenota",function (req,res){
         if (!payload.err_exp) {
             let query = req.body;
             console.log(query);
+            query.DataPrenotazione = new Date (req.body.DataPrenotazione);
+            query.DataPrenotazione.setHours(query.DataPrenotazione.getHours()+2);
+            query.DataFine = new Date (req.body.DataFine);
+            query.DataFine.setHours(query.DataFine.getHours()+2);
+
             mongoFunctions.insertOne("prova","Prenotazioni",query,function (err,data){
                 res.send(data);
             })
@@ -164,12 +169,18 @@ app.post("/api/ctrlPrenotazione",function (req,res){
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {
             let obj = req.body;
-            let giorno = obj.DataPrenotazione.split('T')[0];
-            console.log(giorno);
-            let query = {$and:[{Giorno: giorno},{idCampo:obj.idCampo},{DataPrenotazione :{$gte:new Date(obj.DataPrenotazione)}},{DataFine :{$lte:new Date(obj.DataFine)}}]};
+            let giorno = obj.DataPrenotazione.split(' ')[0];
+            let inizio = new Date(obj.DataPrenotazione);
+            inizio.setHours(inizio.getHours()+2);
+            let fine = new Date(obj.DataFine);
+            fine.setHours(fine.getHours()+2);
+            let query = {$and:[{Giorno: giorno},{idCampo:obj.idCampo},{$or:[{$and: [{DataPrenotazione :{$gt:inizio}},{DataPrenotazione :{$lt:fine}}]}, {DataPrenotazione: inizio}]}]};
             console.log(query);
             mongoFunctions.find("prova","Prenotazioni",query,function (err,data){
-                res.send(data);
+                if(data == "")
+                    res.send("vuoto");
+                else
+                    res.send(data);
             })
         } else {  // Token inesistente o scaduto
             console.log(payload.message);

@@ -97,11 +97,6 @@ $(()=>{
                     "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' value='15' type='text' disabled>"+ 
                     "<input class='input' id='txtCittà"+i+"' type='text' required=''> "+
                     "<input class='input' id='txtPosizione"+i+"' type='text' required=''>"+
-                    "<select id='selectQualita"+i+"' class='form-select' aria-label='Select'>"+
-                    "<option class='input' selected value='Bronze'>Bronze</option>"+
-                    "<option class='input' value='Silver'>Silver</option>"+
-                    "<option class='input' value='Gold'>Gold</option>"+
-                    "</select>"+
                     "<button class='btn btn-primary' id='btnModifica"+i+"'>Modifica</button"+
                     "</form>"+
                 "</div>"+

@@ -199,6 +199,11 @@ $(()=>{
                     "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+ 
                     "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
                     "<input class='input' id='txtData"+i+"' placeholder='' type='date' min='"+minDate+"' max='"+maxDate+"' required=''>"+
+                    "<select id='selectQualita"+i+"' class='form-select input' aria-label='Select'>"+
+                    "<option class='input' selected value='Bronze'>Bronze</option>"+
+                    "<option class='input' value='Silver'>Silver</option>"+
+                    "<option class='input' value='Gold'>Gold</option>"+
+                    "</select>"+
 
                     //"<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
                     "<select class='input form-select' id='txtOra"+i+"'><option value='08:00' id='"+i+"ora08'>08:00<option value='09:00' id='"+i+"ora09'>09:00<option value='10:00' id='"+i+"ora10'>10:00<option value='11:00' id='"+i+"ora11'>11:00<option value='12:00' id='"+i+"ora12'>12:00<option value='13:00' id='"+i+"ora13'>13:00<option value='14:00' id='"+i+"ora14'>14:00<option value='15:00' id='"+i+"ora15'>15:00<option value='16:00' id='"+i+"ora16'>16:00<option value='17:00' id='"+i+"ora17'>17:00<option value='18:00' id='"+i+"ora18'>18:00<option value='19:00' id='"+i+"ora19'>19:00<option value='20:00' id='"+i+"ora20'>20:00<option value='21:00' id='"+i+"ora21'>21:00<option value='22:00' id='"+i+"ora22'>22:00<option value='23:00' id='"+i+"ora23'>23:00</select>"+
@@ -212,7 +217,8 @@ $(()=>{
             "</div>"+
           "</div>");
           $("#ContCampi").append(divCampi);
-          if(currentHour>=8)
+
+          if(currentHour>8)
           {
             currentOption = document.getElementById(i+'ora' + currentHour);
             currentOption.selected = true;
@@ -236,7 +242,7 @@ $(()=>{
           document.getElementById("btnPrenota"+i).addEventListener("click",function (){
             cont++;
             if(cont==1){
-                $("#divCampi"+i).height(730);
+                $("#divCampi"+i).height(810);
                 $("#divCampi"+i).width(300);
             }
             else{
@@ -271,8 +277,17 @@ $(()=>{
                         console.log(string);
                         string = $("#txtData"+i).val().toString() + " " + $("#txtFine"+i).val().toString();
                         prenot.DataFine = string;
+                        prenot.Tipo = $("#selectQualita"+i).val();
                         console.log(string);
                         console.log(prenot);
+
+                        let mail = {};
+
+                        mail.mail = $("#txtMail"+i).val();
+                        mail.nome = $("#txtNome"+i).val();
+                        mail.cognome = $("#txtCognome"+i).val();
+                        mail.prenotazione = prenot;
+
                         
                         let controlloInsert = sendRequestNoCallback("/api/ctrlPrenotazione","POST",prenot);
                         controlloInsert.fail(function (jqXHR) {
@@ -301,7 +316,15 @@ $(()=>{
                                     
                                 });
                                 insert.done(function (serverData){
-                                    window.location="loginOk.html";
+                                    console.log(mail);
+                                    let mailPrenot = sendRequestNoCallback("/api/mailPrenot","POST",mail);
+                                    mailPrenot.fail(function (jqXHR) {
+                                        error(jqXHR);
+                                        $('html,body').css('cursor','default');
+                                    });
+                                    mailPrenot.done(function (serverdata){
+                                        window.location = "loginOK.html";
+                                    })
                                 });
                             }
                             else
@@ -309,8 +332,8 @@ $(()=>{
                                 $('html,body').css('cursor','default');
                                 modal3();
                             }
-
                         });
+
 
                     });
                 }

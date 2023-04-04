@@ -10,6 +10,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const { token } = require("./tokenAdministration");
 const bcrypt = require("bcrypt");
+const pwd = require("./getPwd");
 // Online RSA Key Generator
 const privateKey = fs.readFileSync("keys/privateKey.pem", "utf8");
 const certificate = fs.readFileSync("keys/certificate.crt", "utf8");
@@ -17,6 +18,7 @@ const credentials = { "key": privateKey, "cert": certificate };
 
 const TIMEOUT = 1000;
 let port = 8888;
+const pwd2=require("./getPwd.js");
 
 var httpsServer = HTTPS.createServer(credentials, app);
 httpsServer.listen(port, '127.0.0.1', function () {
@@ -228,12 +230,11 @@ app.post("/api/ctrlUser", function (req, res) {
 app.post("/api/codiceVer",function (req,res){
         let mailDest = req.body.mail;
         let cod = req.body.cod;
-        let pwd=require("./getPwd.js");
         let transport=nodemailer.createTransport({
             service:'gmail',
             auth:{
                 user:"trabucco.ballaris.esame@gmail.com",
-                pass:pwd
+                pass:pwd2
             }
         });
         process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
@@ -354,6 +355,135 @@ app.post("/api/codiceVer",function (req,res){
             }
         });
 })
+
+app.post("/api/mailPrenot",function (req,res){
+    let mailDest = req.body.mail;
+    let transport=nodemailer.createTransport({
+        service:'gmail',
+        auth:{
+            user:"trabucco.ballaris.esame@gmail.com",
+            pass:pwd2
+        }
+    });
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
+    let bodyHtml = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\" lang=\"en\">\n" +
+        "  \n" +
+        "  <head><link rel=\"stylesheet\" type=\"text/css\" hs-webfonts=\"true\" href=\"https://fonts.googleapis.com/css?family=Lato|Lato:i,b,bi\">\n" +
+        "    <title>Email template</title>\n" +
+        "    <meta property=\"og:title\" content=\"Email template\">\n" +
+        "    \n" +
+        "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+        "\n" +
+        "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+        "\n" +
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+        "    \n" +
+        "    <style type=\"text/css\">\n" +
+        "   \n" +
+        "      a{ \n" +
+        "        text-decoration: underline;\n" +
+        "        color: inherit;\n" +
+        "        font-weight: bold;\n" +
+        "        color: #253342;\n" +
+        "      }\n" +
+        "      \n" +
+        "      h1 {\n" +
+        "        font-size: 56px;\n" +
+        "      }\n" +
+        "      \n" +
+        "        h2{\n" +
+        "        font-size: 28px;\n" +
+        "        font-weight: 900; \n" +
+        "      }\n" +
+        "      \n" +
+        "      p {\n" +
+        "        font-weight: 100;\n" +
+        "      }\n" +
+        "      \n" +
+        "      td {\n" +
+        "    vertical-align: top;\n" +
+        "      }\n" +
+        "      \n" +
+        "      #email {\n" +
+        "        margin: auto;\n" +
+        "        width: 600px;\n" +
+        "        background-color: white;\n" +
+        "      }\n" +
+        "      \n" +
+        "      button{\n" +
+        "        font: inherit;\n" +
+        "        background-color: #FF7A59;\n" +
+        "        border: none;\n" +
+        "        padding: 10px;\n" +
+        "        text-transform: uppercase;\n" +
+        "        letter-spacing: 2px;\n" +
+        "        font-weight: 900; \n" +
+        "        color: white;\n" +
+        "        border-radius: 5px; \n" +
+        "        box-shadow: 3px 3px #d94c53;\n" +
+        "      }\n" +
+        "      \n" +
+        "      .subtle-link {\n" +
+        "        font-size: 9px; \n" +
+        "        text-transform:uppercase; \n" +
+        "        letter-spacing: 1px;\n" +
+        "        color: #CBD6E2;\n" +
+        "      }\n" +
+        "      \n" +
+        "    </style>\n" +
+        "    \n" +
+        "  </head>\n" +
+        "    \n" +
+        "    <body bgcolor=\"#F5F8FA\" style=\"width: 100%; margin: auto 0; padding:0; font-family:Lato, sans-serif; font-size:18px; color:#33475B; word-break:break-word\">\n" +
+        "  \n" +
+        " <! View in Browser Link --> \n" +
+        "      \n" +
+        "<div id=\"email\">\n" +
+        "  <! Banner --> \n" +
+        "         <table role=\"presentation\" width=\"100%\">\n" +
+        "            <tr>\n" +
+        "         \n" +
+        "              <td bgcolor=\"#20b2aa\" align=\"center\" style=\"color: white;\">\n" +
+        "            \n" +
+        "             <img src=\"static/img/logo.png\" width=\"400px\" align=\"middle\">\n" +
+        "                \n" +
+        "                <h1>Resoconto Prenotazione</h1>\n" +"---" + req.body.nome +"---" + req.body.cognome +"---" + req.body.prenotazione.Tipo +"---" +req.body.prenotazione.Giorno +
+        "                \n" +
+        "              </td>\n" +
+        "        </table>\n" +
+        "        <! Unsubscribe Footer --> \n" +
+        "      \n" +
+        "  <table role=\"presentation\" bgcolor=\"#F5F8FA\" width=\"100%\" >\n" +
+        "      <tr>\n" +
+        "          <td align=\"left\" style=\"padding: 30px 30px;\">\n" +
+        "            <p style=\"color:#99ACC2\"> CREATE BY TRABUCCO-BALLARIS </p>\n" +
+        "              <a class=\"subtle-link\" href=\"#\"> SMASHSPHERE</a>      \n" +
+        "          </td>\n" +
+        "          </tr>\n" +
+        "      </table> \n" +
+        "      </div>\n" +
+        "    </body>\n" +
+        "      </html>";
+    const message={
+        from:"trabucco.ballaris.esame@gmail.com",
+        to: mailDest,
+        subject:"Codice Verifica",
+        html:bodyHtml
+    };
+    transport.sendMail(message,function (err,info){
+        if(err){
+            console.log(err);
+            process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=1;
+            res.send("Errore di invio mail");
+        }
+        else{
+            console.log(info);
+            process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=1;
+            res.send(JSON.stringify(info));
+        }
+    });
+})
+
 
 
 

@@ -75,20 +75,24 @@ mongoFunctions.prototype.find=function (nomeDb,collection,query,callback){
     });
 }
 
-mongoFunctions.prototype.updateOne=function (nomeDb,collection,query,callback){
-    setConnection(nomeDb,collection,function (errConn,coll,client) {
-        if(errConn.codErr==-1){
-            coll.updateOne(query).toArray(function (errQ,data){
-                client.close();
-                if(!errQ)
-                    callback({codErr:-1,message:""},data);
-                else
-                    callback({codErr:500,message:"Errore durante l'esecuzione della query"}, {});
-            });
-        }else
-            callback(errConn,{});
+mongoFunctions.prototype.updateOne = function (nomeDb, collection, query, update, callback) {
+    setConnection(nomeDb, collection, function (errConn, coll, client) {
+      if (errConn.codErr == -1) {
+        coll.updateOne(query, { $set: update }, function (errQ, result) {
+          client.close();
+          if (!errQ)
+            callback({ codErr: -1, message: "" }, result);
+          else
+            callback({ codErr: 500, message: "Errore durante l'esecuzione della query" }, {});
+        });
+      } else {
+        callback(errConn, {});
+      }
     });
-}
+  }
+  
+  
+
 
 
 mongoFunctions.prototype.findLogin = function(req,nomedb,collection,query,callback){

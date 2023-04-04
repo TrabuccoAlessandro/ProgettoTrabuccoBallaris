@@ -113,6 +113,17 @@ $(()=>{
             $("#ModalErrore").modal("hide");
         });
     }
+    function modal4 (){
+        $("#ModalErrore").modal("show");
+        $("#exampleModalLabel").html("ATTENZIONE!!");
+        $("#modalBody").html("ERRORE NELL'INSERIMENTO DELL'ORA");
+        $("#ModalErrore").on("hidden.bs.modal", function(){
+        });
+        $("#modalClose").on("click", function(){
+            $("#ModalErrore").modal("hide");
+        });
+    
+    }
     function caricaPrenotazioni(data,payload){
         console.log(data);
         for (let i=0;i<data.length;i++)
@@ -156,7 +167,17 @@ $(()=>{
     function caricaCampi(serverData,payload)
     {
         console.log(serverData);
-        
+        let currentOption;
+        let currentOption1;
+        let oggi = new Date();
+        let settimanaSuccessiva = new Date();
+        settimanaSuccessiva.setDate(oggi.getDate() + 7);
+        var minDate = formatDate(oggi);
+        var maxDate = formatDate(settimanaSuccessiva);
+        var now = new Date();
+        var currentHour = now.getHours();
+        let currentHour1 = currentHour+1;
+        console.log(currentHour1);
         for (let i=0;i<serverData.length;i++)
         {   
             let IdCampo=serverData[i]._id;
@@ -177,9 +198,12 @@ $(()=>{
                     "<input class='input' id='txtNome"+i+"' placeholder='Nome' type='text' required=''>"+
                     "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+ 
                     "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
-                    "<input class='input' id='txtData"+i+"' placeholder='' type='date' required=''>"+
-                    "<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
-                    "<input class='input' id='txtFine"+i+"' placeholder='' type='time' required=''>"+
+                    "<input class='input' id='txtData"+i+"' placeholder='' type='date' min='"+minDate+"' max='"+maxDate+"' required=''>"+
+
+                    //"<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
+                    "<select class='input form-select' id='txtOra"+i+"'><option value='08:00' id='"+i+"ora08'>08:00<option value='09:00' id='"+i+"ora09'>09:00<option value='10:00' id='"+i+"ora10'>10:00<option value='11:00' id='"+i+"ora11'>11:00<option value='12:00' id='"+i+"ora12'>12:00<option value='13:00' id='"+i+"ora13'>13:00<option value='14:00' id='"+i+"ora14'>14:00<option value='15:00' id='"+i+"ora15'>15:00<option value='16:00' id='"+i+"ora16'>16:00<option value='17:00' id='"+i+"ora17'>17:00<option value='18:00' id='"+i+"ora18'>18:00<option value='19:00' id='"+i+"ora19'>19:00<option value='20:00' id='"+i+"ora20'>20:00<option value='21:00' id='"+i+"ora21'>21:00<option value='22:00' id='"+i+"ora22'>22:00<option value='23:00' id='"+i+"ora23'>23:00</select>"+
+                    "<select class='input form-select' id='txtFine"+i+"'><option value='08:00' id='"+i+"fine08'>08:00<option value='09:00' id='"+i+"fine09'>09:00<option value='10:00' id='"+i+"fine10'>10:00<option value='11:00' id='"+i+"fine11'>11:00<option value='12:00' id='"+i+"fine12'>12:00<option value='13:00' id='"+i+"fine13'>13:00<option value='14:00' id='"+i+"fine14'>14:00<option value='15:00' id='"+i+"fine15'>15:00<option value='16:00' id='"+i+"fine16'>16:00<option value='17:00' id='"+i+"fine17'>17:00<option value='18:00' id='"+i+"fine18'>18:00<option value='19:00' id='"+i+"fine19'>19:00<option value='20:00' id='"+i+"fine20'>20:00<option value='21:00' id='"+i+"fine21'>21:00<option value='22:00' id='"+i+"fine22'>22:00<option value='23:00' id='"+i+"fine23'>23:00</select>"+
+                    //"<input class='input' id='txtFine"+i+"' placeholder='' type='time' steo=3600 required=''>"+
                     "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
                     "</form>"+
                   "</div>"+
@@ -188,6 +212,20 @@ $(()=>{
             "</div>"+
           "</div>");
           $("#ContCampi").append(divCampi);
+          if(currentHour>=8)
+          {
+            currentOption = document.getElementById(i+'ora' + currentHour);
+            currentOption.selected = true;
+            currentOption1 = document.getElementById(i+'fine' + currentHour1);
+            currentOption1.selected = true;
+          }
+          else
+          {
+            currentOption = document.getElementById(i+'ora08');
+            currentOption.selected = true;
+            currentOption1 = document.getElementById(i+'fine09');
+            currentOption1.selected = true;
+          }
           $("#txtNome"+i).val(payload.nome);
           $("#txtCognome"+i).val(payload.cognome);
           $("#txtMail"+i).val(payload.mail);
@@ -198,7 +236,7 @@ $(()=>{
           document.getElementById("btnPrenota"+i).addEventListener("click",function (){
             cont++;
             if(cont==1){
-                $("#divCampi"+i).height(700);
+                $("#divCampi"+i).height(730);
                 $("#divCampi"+i).width(300);
             }
             else{
@@ -235,7 +273,7 @@ $(()=>{
                         prenot.DataFine = string;
                         console.log(string);
                         console.log(prenot);
-
+                        
                         let controlloInsert = sendRequestNoCallback("/api/ctrlPrenotazione","POST",prenot);
                         controlloInsert.fail(function (jqXHR) {
                             error(jqXHR);
@@ -248,9 +286,19 @@ $(()=>{
                             {
                                 let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
                                 insert.fail(function (jqXHR) {
-                                    error(jqXHR);
-                                    $('html,body').css('cursor','default');
-                                    modal();
+                                    console.log(jqXHR.message);
+                                    if(jqXHR.message=="Server Error: 403 - Inserimento orario errato")
+                                    {
+                                        error(jqXHR);
+                                        $('html,body').css('cursor','default');
+                                        modal4();
+                                    }
+                                    else{
+                                        error(jqXHR);
+                                        $('html,body').css('cursor','default');
+                                        modal();
+                                    }
+                                    
                                 });
                                 insert.done(function (serverData){
                                     window.location="loginOk.html";
@@ -272,6 +320,12 @@ $(()=>{
         }
 
     }
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2);
+        var day = ('0' + date.getDate()).slice(-2);
+        return year + '-' + month + '-' + day;
+      }
     function parseJwt(token) {
         let payload = token.split(".")[1];
         payload = payload.replace(/-/g, "+").replace(/_/g, "/");

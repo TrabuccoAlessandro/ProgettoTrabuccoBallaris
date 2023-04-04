@@ -72,7 +72,7 @@ $(()=>{
     function caricaCampi(serverData)
     {
         console.log(serverData);
-
+        let currentTipologia;
         for (let i=0;i<serverData.length;i++)
         {
             let divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
@@ -90,20 +90,19 @@ $(()=>{
                 "<div class='card card-body'>"+
                     "<form id='prenota' class='form' data-aos='fade-left'>"+
                     "<select id='selectTipo"+i+"' class='form-select' aria-label='Select'>"+
-                    "<option class='input' selected value='Terra'>Terra</option>"+
-                    "<option class='input' value='Sintetico'>Sintetico</option>"+
-                    "<option class='input' value='Palestra'>Palestra</option>"+
+                    "<option id='Terra"+i+"' class='input' value='Terra'>Terra</option>"+
+                    "<option id='Sintetico"+i+"' class='input' value='Sintetico'>Sintetico</option>"+
+                    "<option id='Palestra"+i+"' class='input' value='Palestra'>Palestra</option>"+
                     "</select>"+
-                    "<input class='input' id='txtPrezzo"+i+"' placeholder='15' value='15' type='text' disabled>"+ 
-                    "<input class='input' id='txtCittà"+i+"' placeholder='Città' type='text' required=''> "+
-                    "<input class='input' id='txtPosizione"+i+"' placeholder='Via' type='text' required=''>"+
+                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' value='15' type='text' disabled>"+ 
+                    "<input class='input' id='txtCittà"+i+"' type='text' required=''> "+
+                    "<input class='input' id='txtPosizione"+i+"' type='text' required=''>"+
                     "<select id='selectQualita"+i+"' class='form-select' aria-label='Select'>"+
                     "<option class='input' selected value='Bronze'>Bronze</option>"+
                     "<option class='input' value='Silver'>Silver</option>"+
                     "<option class='input' value='Gold'>Gold</option>"+
                     "</select>"+
-                    "<input class='input' id='txtFine"+i+"' placeholder='' type='time' required=''>"+
-                    "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
+                    "<button class='btn btn-primary' id='btnModifica"+i+"'>Modifica</button"+
                     "</form>"+
                 "</div>"+
                 "</div>"+
@@ -111,6 +110,10 @@ $(()=>{
                 "</div>"+
                 "</div>");
             $("#ContCampi").append(divCampi);
+            currentTipologia=document.getElementById(serverData[i].Tipologia+""+i)
+            currentTipologia.selected=true;
+            $("#txtCittà"+i).val(serverData[i].Città);
+            $("#txtPosizione"+i).val(serverData[i].Posizione);
             $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
             $("#idPrezzo"+i).html("Prezzo ad ora: "+serverData[i].PrezzoOrario+" €");
             $("#idCittà"+i).html("Città: "+serverData[i].Città);
@@ -126,6 +129,31 @@ $(()=>{
                     $("#divCampi"+i).width(250);
                     cont=0;
                 }
+                document.getElementById("btnModifica"+i).addEventListener("click",function(event){
+                    if($("#selectTipo"+i).val()=="" || $("#txtPrezzo"+i).val()=="" || $("#txtCittà"+i).val()=="" || $("#txtPosizione"+i).val()=="" || $("#selectQualita"+i).val()=="")
+                    document.getElementById("btnModifica"+i).removeEventListener("click",function(){});
+                    else
+                    {
+                        event.preventDefault();
+                        $('html,body').css('cursor','wait');
+                        let mod={};
+                        mod._id=serverData[i]._id;
+                        mod.Tipologia=$("#selectTipo"+i).val();
+                        mod.PrezzoOrario=$("#txtPrezzo"+i).val();
+                        mod.Città=$("#txtCittà"+i).val();
+                        mod.Posizione=$("#txtPosizione"+i).val();
+                        mod.Qualità=$("#selectQualita"+i).val();
+                        let modifica=sendRequestNoCallback("/api/campiUpdate","POST",mod);
+                        modifica.fail(function (jqXHR) {
+                            error(jqXHR);
+                            $('html,body').css('cursor','default');
+                            modal();
+                        });
+                        modifica.done(function(serverData){
+                            window.location="admin.html";
+                        })
+                    }
+                })
             });
         }
 

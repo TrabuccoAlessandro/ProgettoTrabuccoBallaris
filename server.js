@@ -155,10 +155,16 @@ app.post("/api/Prenota",function (req,res){
             query.DataPrenotazione.setHours(query.DataPrenotazione.getHours()+2);
             query.DataFine = new Date (req.body.DataFine);
             query.DataFine.setHours(query.DataFine.getHours()+2);
-
-            mongoFunctions.insertOne("prova","Prenotazioni",query,function (err,data){
-                res.send(data);
-            })
+            if(query.DataPrenotazione<query.DataFine)
+            {
+                mongoFunctions.insertOne("prova","Prenotazioni",query,function (err,data){
+                    res.send(data);
+                });
+            }
+            else{
+                error(req,res,{code: 403, message: "Inserimento orario errato"});
+            }
+            
         } else {  // Token inesistente o scaduto
             console.log(payload.message);
             error(req, res, { code: 403, message: payload.message });
@@ -169,10 +175,12 @@ app.post("/api/Prenota",function (req,res){
 app.post("/api/campiUpdate", function (req,res) {
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {
-            let query = req.body;
-            console.log(query);
-            mongoFunctions.updateOne("prova", "Campi", query, function (err, data) {
+            let update = req.body;
+            let query={_id:update._id};
+            console.log(update._id);
+            mongoFunctions.updateOne("prova", "campi", query,update, function (err, data) {
                 res.send(data);
+                console.log(data);
             })
         } else {  // Token inesistente o scaduto
             console.log(payload.message);

@@ -124,21 +124,31 @@
       </svg>
     </span>
         </button>
+
+        <br><br>
+
+        <div id="inputCampo">
+            <label>
+                <input class="cyberpunk-checkbox" type="radio" name="tipo" value="Terra">Terra
+                <input class="cyberpunk-checkbox" type="radio" name="tipo" value="Erba">Erba
+                <input class="cyberpunk-checkbox" type="radio" name="tipo" value="Plastica">Plastica
+            </label>
+
+            <div class="inputGroup">
+                <input type="number" required="" autocomplete="off" id="prezzo">
+                <label for="Prezzo">Prezzo</label>
+                <br><br>
+                <input type="text" required="" autocomplete="off" id="città">
+                <label for="Città">Città</label>
+                <br><br>
+                <input type="text" required="" autocomplete="off" id="via">
+                <label for="Via">Via</label>
+            </div>
+
+            <button class="btn btn-success" id="btnInserisci">INSERISCI</button>
+
+        </div>
     </section>
-    <!--<div class="flip-card" id="divCampi" data-aos="fade-left">
-      <div class="flip-card-inner">
-          <div class="flip-card-front-1">
-
-              <p class="titleCampi"></p>
-          </div>
-          <div class="flip-card-back">
-              <p class="titleCampi">CARATTERISTICHE</p>
-              <p></p>
-          </div>
-      </div>
-    </div>-->
-    <!-- End campi Section -->
-
 
     <!-- Modal -->
     <div class="modal fade" id="ModalErrore" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

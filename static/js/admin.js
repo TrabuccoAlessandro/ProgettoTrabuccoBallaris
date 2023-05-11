@@ -56,6 +56,40 @@ $(()=>{
         window.location.href = "loginOk.html";
     });
 
+    document.getElementById("btnNuovoCampo").addEventListener("click", function (){
+
+    })
+
+    document.getElementById("btnInserisci").addEventListener("click", function (){
+        let nuovoCampo = {};
+        $('html,body').css('cursor','wait');
+
+        let id = sendRequestNoCallback("/api/getIdCampo","GET",{});
+        id.fail(function (jqXHR) {
+            error(jqXHR);
+            $('html,body').css('cursor','default');
+        });
+        id.done(function (serverData) {
+            serverData = JSON.parse(serverData);
+            let id = parseInt(serverData) + 1;
+            nuovoCampo._id = parseInt(id);
+            nuovoCampo.Tipologia = document.tipo.value.toString();
+            nuovoCampo.PrezzoOrario = document.getElementById("prezzo").value.toString();
+            nuovoCampo.Città = document.getElementById("città").value.toString();
+            nuovoCampo.Posizione = document.getElementById("via").value.toString();
+            let insert = sendRequestNoCallback("/api/nuovoCampo","POST",nuovoCampo);
+            insert.fail(function (jqXHR) {
+                error(jqXHR);
+                $('html,body').css('cursor','default');
+            });
+            insert.done(function (serverData){
+                $('html,body').css('cursor','default');
+                //window.location.reload()
+            });
+
+        });
+    })
+
 
     function modal (){
         localStorage.setItem("token", "corrupted");

@@ -78,6 +78,16 @@ app.get("/api/getIdPren", function (req, res) {
         }
     });
 });
+app.get("/api/getIdCampo", function (req, res) {
+    mongoFunctions.conta( "prova", "campi", {}, function (err, data) {
+        if (err.codErr == -1) {
+            res.send(data.toString());
+        }
+        else{
+            error(req, res, {code:err.codErr, message:err.message});
+        }
+    });
+});
 app.get("/api/ctrlSession", function (req, res) {
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
         if (!payload.err_exp) {
@@ -130,7 +140,7 @@ app.post("/api/nuovoCampo",function (req,res){
         if (!payload.err_exp) {
             let query = req.body;
             console.log(query);
-            mongoFunctions.insertOne("prova","Campi",query,function (err,data){
+            mongoFunctions.insertOne("prova","campi",query,function (err,data){
                 res.send(data);
             })
         } else {  // Token inesistente o scaduto

@@ -16,6 +16,7 @@ $(()=>{
     $("#ContCampi").hide();
     $("#campi").hide();
     $("#prenotazioni").hide();
+    $("#inputCampo").hide();
     setTimeout(function() {
         $("#footer").show();
         $("#prenota").show();
@@ -45,6 +46,8 @@ $(()=>{
             })
         });
 
+        document.getElementById("check").checked = true;
+
     }
     document.getElementById("tagLogin").addEventListener("click",function (){
         // Logout
@@ -57,37 +60,55 @@ $(()=>{
     });
 
     document.getElementById("btnNuovoCampo").addEventListener("click", function (){
-
+        $("#inputCampo").show();
     })
 
     document.getElementById("btnInserisci").addEventListener("click", function (){
         let nuovoCampo = {};
-        $('html,body').css('cursor','wait');
+        if(document.getElementById("prezzo").value == "" || document.getElementById("città").value == "" || document.getElementById("via").value == "")
+        {
+            modal2()
+        }
+        else
+        {
+            $('html,body').css('cursor','wait');
 
-        let id = sendRequestNoCallback("/api/getIdCampo","GET",{});
-        id.fail(function (jqXHR) {
-            error(jqXHR);
-            $('html,body').css('cursor','default');
-        });
-        id.done(function (serverData) {
-            serverData = JSON.parse(serverData);
-            let id = parseInt(serverData) + 1;
-            nuovoCampo._id = parseInt(id);
-            nuovoCampo.Tipologia = document.tipo.value.toString();
-            nuovoCampo.PrezzoOrario = document.getElementById("prezzo").value.toString();
-            nuovoCampo.Città = document.getElementById("città").value.toString();
-            nuovoCampo.Posizione = document.getElementById("via").value.toString();
-            let insert = sendRequestNoCallback("/api/nuovoCampo","POST",nuovoCampo);
-            insert.fail(function (jqXHR) {
+            let id = sendRequestNoCallback("/api/getIdCampo","GET",{});
+            id.fail(function (jqXHR) {
                 error(jqXHR);
                 $('html,body').css('cursor','default');
             });
-            insert.done(function (serverData){
-                $('html,body').css('cursor','default');
-                //window.location.reload()
-            });
+            id.done(function (serverData) {
+                serverData = JSON.parse(serverData);
+                let id = parseInt(serverData) + 1;
+                nuovoCampo._id = parseInt(id);
+                const btn = document.querySelector('#btn');
+                const radioButtons = document.querySelectorAll('input[name="tipo"]');
+                let selectedSize;
+                for (const radioButton of radioButtons) {
+                    if (radioButton.checked) {
+                        selectedSize = radioButton.value;
+                        break;
+                    }
+                }
+                nuovoCampo.Tipologia = selectedSize.toString();
+                nuovoCampo.PrezzoOrario = document.getElementById("prezzo").value.toString();
+                nuovoCampo.Città = document.getElementById("città").value.toString();
+                nuovoCampo.Posizione = document.getElementById("via").value.toString();
+                console.log(nuovoCampo);
 
-        });
+                let insert = sendRequestNoCallback("/api/nuovoCampo","POST",nuovoCampo);
+                insert.fail(function (jqXHR) {
+                    error(jqXHR);
+                    $('html,body').css('cursor','default');
+                });
+                insert.done(function (serverData){
+                    $('html,body').css('cursor','default');
+                });
+
+            });
+        }
+
     })
 
 
@@ -101,6 +122,17 @@ $(()=>{
         });
         $("#modalClose").on("click", function(){
             window.location.href = "index.html";
+        });
+    }
+    function modal2 (){
+        $("#ModalErrore").modal("show");
+        $("#exampleModalLabel").html("ATTENZIONE!!");
+        $("#modalBody").html("NON HAI INSERITO TUTTI I DATI");
+        $("#ModalErrore").on("hidden.bs.modal", function(){
+            $("#ModalErrore").modal("hide");
+        });
+        $("#modalClose").on("click", function(){
+            $("#ModalErrore").modal("hide");
         });
     }
     function caricaCampi(serverData)

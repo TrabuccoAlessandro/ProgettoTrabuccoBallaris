@@ -179,24 +179,29 @@ $(()=>{
         let currentHour1 = currentHour+1;
         console.log(currentHour1);
         for (let i=0;i<serverData.length;i++)
-        {   
-            let IdCampo=serverData[i]._id;
-            let divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
-            "<div class='flip-card-inner'>"+
-                "<div class='flip-card-front'>"+
+        {
+            let IdCampo;
+            let divCampi;
+            if(serverData[i].Tipologia == "Terra")
+            {
+                IdCampo=serverData[i]._id;
+                console.log(serverData[i])
+                divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
+                    "<div class='flip-card-inner'>"+
+                    "<div class='flip-card-front terra'>"+
                     "<p class='titleCampi'></p>"+
-                "</div>"+
-                "<div class='flip-card-back'>"+
+                    "</div>"+
+                    "<div class='flip-card-back'>"+
                     "<p class='titleCampi'>CARATTERISTICHE</p>"+
                     "<p id='idTipologia"+i+"'></p>"+
                     "<p id='idPrezzo"+i+"'></p>"+
                     "<p id='idCittà"+i+"'></p>"+
-                "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
-                "<div class='collapse' id='collapseExample"+i+"'>"+
-                  "<div class='card card-body'>"+
+                    "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
+                    "<div class='collapse' id='collapseExample"+i+"'>"+
+                    "<div class='card card-body'>"+
                     "<form id='prenota' class='form' data-aos='fade-left'>"+
                     "<input class='input' id='txtNome"+i+"' placeholder='Nome' type='text' required=''>"+
-                    "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+ 
+                    "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+
                     "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
                     "<input class='input' id='txtData"+i+"' placeholder='' type='date' min='"+minDate+"' max='"+maxDate+"' required=''>"+
                     "<select id='selectQualita"+i+"' class='form-select input' aria-label='Select'>"+
@@ -211,12 +216,95 @@ $(()=>{
                     //"<input class='input' id='txtFine"+i+"' placeholder='' type='time' steo=3600 required=''>"+
                     "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
                     "</form>"+
-                  "</div>"+
-               "</div>"+
-              "</div>"+
-            "</div>"+
-          "</div>");
-          $("#ContCampi").append(divCampi);
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#ContCampi").append(divCampi);
+            }
+            else if (serverData[i].Tipologia == "Sintetico")
+            {
+                IdCampo=serverData[i]._id;
+                console.log(serverData[i])
+                divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
+                    "<div class='flip-card-inner'>"+
+                    "<div class='flip-card-front sintetico'>"+
+                    "<p class='titleCampi'></p>"+
+                    "</div>"+
+                    "<div class='flip-card-back'>"+
+                    "<p class='titleCampi'>CARATTERISTICHE</p>"+
+                    "<p id='idTipologia"+i+"'></p>"+
+                    "<p id='idPrezzo"+i+"'></p>"+
+                    "<p id='idCittà"+i+"'></p>"+
+                    "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
+                    "<div class='collapse' id='collapseExample"+i+"'>"+
+                    "<div class='card card-body'>"+
+                    "<form id='prenota' class='form' data-aos='fade-left'>"+
+                    "<input class='input' id='txtNome"+i+"' placeholder='Nome' type='text' required=''>"+
+                    "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+
+                    "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
+                    "<input class='input' id='txtData"+i+"' placeholder='' type='date' min='"+minDate+"' max='"+maxDate+"' required=''>"+
+                    "<select id='selectQualita"+i+"' class='form-select input' aria-label='Select'>"+
+                    "<option class='input' selected value='Bronze'>Bronze</option>"+
+                    "<option class='input' value='Silver'>Silver</option>"+
+                    "<option class='input' value='Gold'>Gold</option>"+
+                    "</select>"+
+
+                    //"<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
+                    "<select class='input form-select' id='txtOra"+i+"'><option value='08:00' id='"+i+"ora08'>08:00<option value='09:00' id='"+i+"ora09'>09:00<option value='10:00' id='"+i+"ora10'>10:00<option value='11:00' id='"+i+"ora11'>11:00<option value='12:00' id='"+i+"ora12'>12:00<option value='13:00' id='"+i+"ora13'>13:00<option value='14:00' id='"+i+"ora14'>14:00<option value='15:00' id='"+i+"ora15'>15:00<option value='16:00' id='"+i+"ora16'>16:00<option value='17:00' id='"+i+"ora17'>17:00<option value='18:00' id='"+i+"ora18'>18:00<option value='19:00' id='"+i+"ora19'>19:00<option value='20:00' id='"+i+"ora20'>20:00<option value='21:00' id='"+i+"ora21'>21:00<option value='22:00' id='"+i+"ora22'>22:00<option value='23:00' id='"+i+"ora23'>23:00</select>"+
+                    "<select class='input form-select' id='txtFine"+i+"'><option value='08:00' id='"+i+"fine08'>08:00<option value='09:00' id='"+i+"fine09'>09:00<option value='10:00' id='"+i+"fine10'>10:00<option value='11:00' id='"+i+"fine11'>11:00<option value='12:00' id='"+i+"fine12'>12:00<option value='13:00' id='"+i+"fine13'>13:00<option value='14:00' id='"+i+"fine14'>14:00<option value='15:00' id='"+i+"fine15'>15:00<option value='16:00' id='"+i+"fine16'>16:00<option value='17:00' id='"+i+"fine17'>17:00<option value='18:00' id='"+i+"fine18'>18:00<option value='19:00' id='"+i+"fine19'>19:00<option value='20:00' id='"+i+"fine20'>20:00<option value='21:00' id='"+i+"fine21'>21:00<option value='22:00' id='"+i+"fine22'>22:00<option value='23:00' id='"+i+"fine23'>23:00</select>"+
+                    //"<input class='input' id='txtFine"+i+"' placeholder='' type='time' steo=3600 required=''>"+
+                    "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
+                    "</form>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#ContCampi").append(divCampi);
+            }
+            else if (serverData[i].Tipologia == "Erba")
+            {
+                IdCampo=serverData[i]._id;
+                console.log(serverData[i])
+                divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
+                    "<div class='flip-card-inner'>"+
+                    "<div class='flip-card-front erba'>"+
+                    "<p class='titleCampi'></p>"+
+                    "</div>"+
+                    "<div class='flip-card-back'>"+
+                    "<p class='titleCampi'>CARATTERISTICHE</p>"+
+                    "<p id='idTipologia"+i+"'></p>"+
+                    "<p id='idPrezzo"+i+"'></p>"+
+                    "<p id='idCittà"+i+"'></p>"+
+                    "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'> PRENOTA </button></center>"+
+                    "<div class='collapse' id='collapseExample"+i+"'>"+
+                    "<div class='card card-body'>"+
+                    "<form id='prenota' class='form' data-aos='fade-left'>"+
+                    "<input class='input' id='txtNome"+i+"' placeholder='Nome' type='text' required=''>"+
+                    "<input class='input' id='txtCognome"+i+"' placeholder='Cognome' type='text' required=''>"+
+                    "<input class='input' id='txtMail"+i+"' placeholder='Email' type='email' required=''> "+
+                    "<input class='input' id='txtData"+i+"' placeholder='' type='date' min='"+minDate+"' max='"+maxDate+"' required=''>"+
+                    "<select id='selectQualita"+i+"' class='form-select input' aria-label='Select'>"+
+                    "<option class='input' selected value='Bronze'>Bronze</option>"+
+                    "<option class='input' value='Silver'>Silver</option>"+
+                    "<option class='input' value='Gold'>Gold</option>"+
+                    "</select>"+
+
+                    //"<input class='input' id='txtOra"+i+"'  placeholder='' type='time' required=''>"+
+                    "<select class='input form-select' id='txtOra"+i+"'><option value='08:00' id='"+i+"ora08'>08:00<option value='09:00' id='"+i+"ora09'>09:00<option value='10:00' id='"+i+"ora10'>10:00<option value='11:00' id='"+i+"ora11'>11:00<option value='12:00' id='"+i+"ora12'>12:00<option value='13:00' id='"+i+"ora13'>13:00<option value='14:00' id='"+i+"ora14'>14:00<option value='15:00' id='"+i+"ora15'>15:00<option value='16:00' id='"+i+"ora16'>16:00<option value='17:00' id='"+i+"ora17'>17:00<option value='18:00' id='"+i+"ora18'>18:00<option value='19:00' id='"+i+"ora19'>19:00<option value='20:00' id='"+i+"ora20'>20:00<option value='21:00' id='"+i+"ora21'>21:00<option value='22:00' id='"+i+"ora22'>22:00<option value='23:00' id='"+i+"ora23'>23:00</select>"+
+                    "<select class='input form-select' id='txtFine"+i+"'><option value='08:00' id='"+i+"fine08'>08:00<option value='09:00' id='"+i+"fine09'>09:00<option value='10:00' id='"+i+"fine10'>10:00<option value='11:00' id='"+i+"fine11'>11:00<option value='12:00' id='"+i+"fine12'>12:00<option value='13:00' id='"+i+"fine13'>13:00<option value='14:00' id='"+i+"fine14'>14:00<option value='15:00' id='"+i+"fine15'>15:00<option value='16:00' id='"+i+"fine16'>16:00<option value='17:00' id='"+i+"fine17'>17:00<option value='18:00' id='"+i+"fine18'>18:00<option value='19:00' id='"+i+"fine19'>19:00<option value='20:00' id='"+i+"fine20'>20:00<option value='21:00' id='"+i+"fine21'>21:00<option value='22:00' id='"+i+"fine22'>22:00<option value='23:00' id='"+i+"fine23'>23:00</select>"+
+                    //"<input class='input' id='txtFine"+i+"' placeholder='' type='time' steo=3600 required=''>"+
+                    "<button class='btn btn-primary' id='btnInviaPren"+i+"'>Invia</button"+
+                    "</form>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#ContCampi").append(divCampi);
+            }
 
           if(currentHour>8)
           {

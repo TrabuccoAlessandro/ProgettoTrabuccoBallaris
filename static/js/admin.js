@@ -104,6 +104,7 @@ $(()=>{
                 });
                 insert.done(function (serverData){
                     $('html,body').css('cursor','default');
+                    window.location.reload()
                 });
 
             });
@@ -160,7 +161,7 @@ $(()=>{
                     "<option id='Sintetico"+i+"' class='input' value='Sintetico'>Sintetico</option>"+
                     "<option id='Palestra"+i+"' class='input' value='Palestra'>Palestra</option>"+
                     "</select>"+
-                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' value='15' type='text' disabled>"+ 
+                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' value='15' type='text' disabled>"+
                     "<input class='input' id='txtCittà"+i+"' type='text' required=''> "+
                     "<input class='input' id='txtPosizione"+i+"' type='text' required=''>"+
                     "<button class='btn btn-primary' id='btnModifica"+i+"'>Modifica</button"+
@@ -171,6 +172,7 @@ $(()=>{
                 "</div>"+
                 "</div>");
             $("#ContCampi").append(divCampi);
+            
             currentTipologia=document.getElementById(serverData[i].Tipologia+""+i)
             currentTipologia.selected=true;
             $("#txtCittà"+i).val(serverData[i].Città);

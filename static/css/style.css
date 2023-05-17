@@ -1552,6 +1552,21 @@ section {
   background: #1acc8d;
 }
 
+.pricing .bronze h3{
+  color: #fff;
+  background-color: #CD7F32;
+}
+
+.pricing .silver h3{
+  color: #fff;
+  background-color: silver;
+}
+
+.pricing .gold h3{
+  color: #fff;
+  background-color: goldenrod;
+}
+
 .pricing .advanced {
   width: 200px;
   position: absolute;
@@ -1561,8 +1576,8 @@ section {
   z-index: 1;
   font-size: 14px;
   padding: 1px 0 3px 0;
-  background: #1acc8d;
-  color: #fff;
+  background: black;
+  color: red;
 }
 
 /*--------------------------------------------------------------

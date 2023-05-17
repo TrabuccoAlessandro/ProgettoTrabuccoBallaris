@@ -404,15 +404,25 @@ $(()=>{
                                     
                                 });
                                 insert.done(function (serverData){
+
+                                    let prezzoCampo = sendRequestNoCallback("/api/prezzoCampo", "POST", {_id:mail.prenotazione.idCampo});
                                     console.log(mail);
-                                    let mailPrenot = sendRequestNoCallback("/api/mailPrenot","POST",mail);
-                                    mailPrenot.fail(function (jqXHR) {
+                                    prezzoCampo.fail(function (jqXHR){
                                         error(jqXHR);
-                                        $('html,body').css('cursor','default');
                                     });
-                                    mailPrenot.done(function (serverdata){
-                                        window.location = "loginOK.html";
+                                    prezzoCampo.done(function (serverData){
+                                        serverData = JSON.parse(serverData);
+                                        mail.prezzo = serverData.PrezzoOrario;
+                                        let mailPrenot = sendRequestNoCallback("/api/mailPrenot","POST",mail);
+                                        mailPrenot.fail(function (jqXHR) {
+                                            error(jqXHR);
+                                            $('html,body').css('cursor','default');
+                                        });
+                                        mailPrenot.done(function (serverdata){
+                                            window.location = "loginOK.html";
+                                        })
                                     })
+
                                 });
                             }
                             else

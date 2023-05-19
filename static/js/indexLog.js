@@ -306,7 +306,7 @@ $(()=>{
                 $("#ContCampi").append(divCampi);
             }
 
-          if(currentHour>8)
+          if(currentHour>9)
           {
             currentOption = document.getElementById(i+'ora' + currentHour);
             currentOption.selected = true;

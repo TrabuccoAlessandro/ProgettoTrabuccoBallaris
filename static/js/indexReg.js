@@ -43,7 +43,7 @@ $(()=>{
                         });
                         verificaCodice.done(function (serverData){
                             console.log(serverData);
-                            $("#modalVerifica").modal("show");
+                            $("#modal-info").modal("show");
                         });
                     });
                 }

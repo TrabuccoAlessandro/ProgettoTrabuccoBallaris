@@ -104,24 +104,26 @@
 				<div class="form-row-last">
 					<button id="btnRegistra" data-bs-toggle="modal">Registrati</button>
 					<button id="btnAnnulla">Annulla</button>
-					<div class="modal fade" id="modalVerifica" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div id="modal-info" class="modal modal-message modal-info fade" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog">
-						  <div class="modal-content">
-							<div class="modal-header">
-							  <h5 class="modal-title" id="staticBackdropLabel">Controlla la tua Mail per il codice di verifica</h5>
-							  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
-								<input type="text" id="txtCodice" class="form-control" placeholder="Codice di verifica" />
-							</div>
-							<div class="modal-footer">
-							  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-							  <button type="button" id="btnVerifica" class="btn btn-primary">Verifica</button>
-							</div>
-						  </div>
-						</div>
-					  </div>
+							<div class="modal-content">
+								<div class="modal-header">
+									<i class="fa fa-envelope"></i>
+								</div>
+								<div class="modal-title">Alert</div>
+								<div class="modal-body"><img style="width: 70%" src="img/mail.png"></div>
+								<div class="modal-body">You'vd got mail!</div>
+								<div class="modal-body">
+									<i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+									<input type="text" id="txtCodice" class="form-control" placeholder="Codice di verifica" />
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+									<button type="button" id="btnVerifica" class="btn btn-primary">Verifica</button>
+								</div>
+							</div> <!-- / .modal-content -->
+						</div> <!-- / .modal-dialog -->
+					</div>
 				</div>
 			</form>
 		</div>

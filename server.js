@@ -149,6 +149,50 @@ app.post("/api/prezzoCampo",function (req,res){
         }
     });
 })
+app.post("/api/infoPren",function (req,res){
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = req.body;
+            console.log(query);
+            mongoFunctions.findOne("prova","Prenotazioni",query,function (err,data){
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
+})
+
+app.post("/api/infoCamp",function (req,res){
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = req.body;
+            console.log(query);
+            mongoFunctions.findOne("prova","campi",query,function (err,data){
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
+})
+app.post("/api/eliminaPren",function (req,res){
+    tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
+        if (!payload.err_exp) {
+            let query = req.body;
+            console.log(query);
+            mongoFunctions.deleteOne("prova","Prenotazioni",query,function (err,data){
+                res.send(data);
+            })
+        } else {  // Token inesistente o scaduto
+            console.log(payload.message);
+            error(req, res, { code: 403, message: payload.message });
+        }
+    });
+})
+
 
 app.post("/api/nuovoCampo",function (req,res){
     tokenAdministration.ctrlTokenLocalStorage(req, function (payload) {
@@ -386,27 +430,12 @@ app.post("/api/codiceVer",function (req,res){
 })
 
 app.post("/api/mailPrenot",function (req,res){
+
     let mailDest = req.body.mail;
     let oraInizio = req.body.prenotazione.DataPrenotazione.toString();
     oraInizio = oraInizio.split(' ')[1];
     let oraFine = req.body.prenotazione.DataFine.toString();
     oraFine = oraFine.split(' ')[1];
-
-    let ore = new Date(req.body.prenotazione.DataFine.toString()).getHours() - new Date(req.body.prenotazione.DataPrenotazione.toString()).getHours();
-    let prezzo;
-    switch (req.body.prenotazione.Tipo){
-        case "Bronze":
-            prezzo = parseInt(req.body.prezzo) * parseInt(ore);
-            break;
-        case "Silver":
-            prezzo = (parseInt(req.body.prezzo) + 5) * parseInt(ore);
-            break;
-        case "Gold":
-            prezzo = (parseInt(req.body.prezzo) +20) * parseInt(ore);
-            break;
-
-    }
-    console.log(prezzo);
     let transport=nodemailer.createTransport({
         service:'gmail',
         auth:{
@@ -431,7 +460,7 @@ app.post("/api/mailPrenot",function (req,res){
         "    <h3>Ora Inzio -->"+oraInizio+"</h3>\n" +
         "    <h3>Ora Fine --> "+oraFine+"</h3>\n" +
         "    <h3>Tipo --> "+req.body.prenotazione.Tipo+"</h3>\n" +
-        "    <h2 style='text-align: right; color: red; padding: 4px; border: 1px double black'>TOTALE --> €"+prezzo+"</h2>\n" +
+        "    <h2 style='text-align: right; color: red; padding: 4px; border: 1px double black'>TOTALE --> €"+req.body.prenotazione.Prezzo+"</h2>\n" +
         "</div>\n" +
         "\n" +
         "</body>\n" +

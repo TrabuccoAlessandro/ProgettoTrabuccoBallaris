@@ -77,22 +77,19 @@ mongoFunctions.prototype.find=function (nomeDb,collection,query,callback){
 
 mongoFunctions.prototype.updateOne = function (nomeDb, collection, query, update, callback) {
     setConnection(nomeDb, collection, function (errConn, coll, client) {
-      if (errConn.codErr == -1) {
-        coll.updateOne(query, { $set: update }, function (errQ, result) {
-          client.close();
-          if (!errQ)
-            callback({ codErr: -1, message: "" }, result);
-          else
-            callback({ codErr: 500, message: "Errore durante l'esecuzione della query" }, {});
-        });
-      } else {
-        callback(errConn, {});
-      }
+        if (errConn.codErr == -1) {
+            coll.updateOne(query, {$set: update}, function (errQ, result) {
+                client.close();
+                if (!errQ)
+                    callback({codErr: -1, message: ""}, result);
+                else
+                    callback({codErr: 500, message: "Errore durante l'esecuzione della query"}, {});
+            });
+        } else {
+            callback(errConn, {});
+        }
     });
-  }
-  
-  
-
+}
 
 
 mongoFunctions.prototype.findLogin = function(req,nomedb,collection,query,callback){
@@ -132,6 +129,24 @@ mongoFunctions.prototype.insertOne = function (nomeDb, collection, query, callba
     setConnection(nomeDb, collection, function (errConn,collection,conn){
         if(errConn.codErr==-1){
             collection.insertOne(query, function(errQ,data) {
+                let errQuery;
+                if(!errQ){
+                    errQuery={codErr:-1, message:""};
+                }else
+                    errQuery={codErr:500, message:"Errore durante l'esecuzione della query"};
+                conn.close();
+                callback(errQuery);
+            });
+        }
+        else
+            callback(errConn);
+    });
+}
+
+mongoFunctions.prototype.deleteOne = function (nomeDb, collection, query, callback){
+    setConnection(nomeDb, collection, function (errConn,collection,conn){
+        if(errConn.codErr==-1){
+            collection.deleteOne(query, function(errQ,data) {
                 let errQuery;
                 if(!errQ){
                     errQuery={codErr:-1, message:""};

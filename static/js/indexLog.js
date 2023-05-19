@@ -128,6 +128,7 @@ $(()=>{
         console.log(data);
         for (let i=0;i<data.length;i++)
         {
+            let id = data[i]._id;
             let divCard=$("<div class='col'>"+
               "<div class='our_solution_category'>"+
                 "<div class='solution_cards_box'>"+
@@ -135,7 +136,7 @@ $(()=>{
                     "<div class='hover_color_bubble'></div>"+
                     
                     "<div class='solu_title'>"+
-                      "<h3>Prenotazione "+data[i]._id+"</h3>"+
+                      "<h3>Prenotazione</h3>"+
                     "</div>"+
                     "<div class='solu_description'>"+
                       "<p id='idPren"+i+"'>"+
@@ -146,7 +147,8 @@ $(()=>{
                       "</p>"+
                       "<p id='data"+i+"'>"+
                       "</p>"+
-                      "<button type='button' class='read_more_btn'>Read More</button>"+
+                      "<button type='button' id='btnPren "+id+"' class='read_more_btn'>Read More</button> <p></p><span></span>"+
+                      "<button style='background-color: red; margin-top: 5px; color: red' id='btnElPren "+id+"' class='btn btn-danger'>ELIMINA</button>"+
                     "</div>"+
                   "</div>"+
                   
@@ -160,6 +162,60 @@ $(()=>{
           $("#idPrenotante"+i).html("Nome: "+payload.nome);
           //$("#idCampo").html(data[0].idCampo);
           $("#data"+i).html("Data prenotazione: " + data[i].DataPrenotazione.split('T')[0].toString());
+            document.getElementById("btnElPren "+id).addEventListener("click",function (){
+                $('html,body').css('cursor','wait');
+                let idElim = parseInt(this.id.split(' ')[1]);
+                let eliminaPren = sendRequestNoCallback("/api/eliminaPren","POST",{_id:idElim})
+                eliminaPren.fail(function (jqXHR) {
+                    error(jqXHR);
+                    $('html,body').css('cursor','default');
+                });
+                eliminaPren.done(function (serverdata) {
+                    window.location.reload();
+                });
+
+            })
+            document.getElementById("btnPren "+id).addEventListener("click", function (){
+                $('html,body').css('cursor','wait');
+                //CARICA INFO PRENOTAZIONE
+                let idPren = parseInt(this.id.split(' ')[1].toString());
+                $("#lblId").text(idPren);
+                $("#lblId").hide();
+                let infoPren = sendRequestNoCallback("/api/infoPren", "POST",{_id:idPren})
+                infoPren.fail(function (jqXHR) {
+                    error(jqXHR);
+                    $('html,body').css('cursor','default');
+                });
+                infoPren.done(function (serverData){
+                    serverData = JSON.parse(serverData)
+                    console.log(serverData);
+                    let infoCamp = sendRequestNoCallback("/api/infoCamp","POST",{_id:serverData.idCampo})
+                    infoCamp.fail(function (jqXHR) {
+                        error(jqXHR);
+                        $('html,body').css('cursor','default');
+                    });
+                    infoCamp.done(function (dataServer){
+                        console.log(JSON.parse(dataServer));
+                        dataServer = JSON.parse(dataServer);
+                        $("#lblPrezzo").text(serverData.Prezzo);
+                        $("#lblData").text(serverData.DataPrenotazione.split('T')[0]);
+                        let oraStart = serverData.DataPrenotazione.split('T')[1];
+                        $("#lblOraInzio").text(oraStart.split(':')[0].toString() +":00");
+                        let oraArriv = serverData.DataFine.split('T')[1];
+                        $("#lblOraFine").text(oraArriv.split(':')[0].toString() +":00");
+                        $("#lblPosizione").text(dataServer.Citta.toString() + "--" + dataServer.Posizione);
+                        $("#modalInfo").modal("show");
+                        $("#ModalErrore").on("hidden.bs.modal", function(){
+                        });
+                        $("#modalClose").on("click", function(){
+                            $("#ModalErrore").modal("hide");
+                        });
+                        $('html,body').css('cursor','default');
+
+                    })
+                })
+
+            })
         }
         
   
@@ -325,7 +381,7 @@ $(()=>{
           $("#txtMail"+i).val(payload.mail);
           $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
           $("#idPrezzo"+i).html("Prezzo ad ora: "+serverData[i].PrezzoOrario+" €");
-          $("#idCittà"+i).html("Città: "+serverData[i].Città);
+          $("#idCittà"+i).html("Città: "+serverData[i].Citta);
           let cont=0;
           document.getElementById("btnPrenota"+i).addEventListener("click",function (){
             cont++;
@@ -387,32 +443,54 @@ $(()=>{
                             console.log(serverData);
                             if(serverData == "vuoto")
                             {
-                                let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
-                                insert.fail(function (jqXHR) {
-                                    console.log(jqXHR.message);
-                                    if(jqXHR.message=="Server Error: 403 - Inserimento orario errato")
-                                    {
-                                        error(jqXHR);
-                                        $('html,body').css('cursor','default');
-                                        modal4();
-                                    }
-                                    else{
-                                        error(jqXHR);
-                                        $('html,body').css('cursor','default');
-                                        modal();
-                                    }
-                                    
+                                let prezzoCampo = sendRequestNoCallback("/api/prezzoCampo", "POST", {_id:mail.prenotazione.idCampo});
+                                console.log(mail);
+                                prezzoCampo.fail(function (jqXHR){
+                                    error(jqXHR);
                                 });
-                                insert.done(function (serverData){
+                                prezzoCampo.done(function (serverData){
+                                    serverData = JSON.parse(serverData);
+                                    mail.prezzo = serverData.PrezzoOrario;
+                                    let oraInizio = mail.prenotazione.DataPrenotazione.toString();
+                                    oraInizio = oraInizio.split(' ')[1];
+                                    let oraFine = mail.prenotazione.DataFine.toString();
+                                    oraFine = oraFine.split(' ')[1];
 
-                                    let prezzoCampo = sendRequestNoCallback("/api/prezzoCampo", "POST", {_id:mail.prenotazione.idCampo});
-                                    console.log(mail);
-                                    prezzoCampo.fail(function (jqXHR){
-                                        error(jqXHR);
+                                    let ore = new Date(mail.prenotazione.DataFine.toString()).getHours() - new Date(mail.prenotazione.DataPrenotazione.toString()).getHours();
+                                    let prezzo;
+                                    switch (mail.prenotazione.Tipo){
+                                        case "Bronze":
+                                            prezzo = parseInt(mail.prezzo) * parseInt(ore);
+                                            break;
+                                        case "Silver":
+                                            prezzo = (parseInt(mail.prezzo) + 5) * parseInt(ore);
+                                            break;
+                                        case "Gold":
+                                            prezzo = (parseInt(mail.prezzo) +20) * parseInt(ore);
+                                            break;
+
+                                    }
+                                    console.log(prezzo);
+                                    mail.prezzo = prezzo;
+                                    prenot.Prezzo = prezzo;
+                                    mail.prenotazione = prenot;
+                                    let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
+                                    insert.fail(function (jqXHR) {
+                                        console.log(jqXHR.message);
+                                        if(jqXHR.message=="Server Error: 403 - Inserimento orario errato")
+                                        {
+                                            error(jqXHR);
+                                            $('html,body').css('cursor','default');
+                                            modal4();
+                                        }
+                                        else{
+                                            error(jqXHR);
+                                            $('html,body').css('cursor','default');
+                                            modal();
+                                        }
+
                                     });
-                                    prezzoCampo.done(function (serverData){
-                                        serverData = JSON.parse(serverData);
-                                        mail.prezzo = serverData.PrezzoOrario;
+                                    insert.done(function (serverData){
                                         let mailPrenot = sendRequestNoCallback("/api/mailPrenot","POST",mail);
                                         mailPrenot.fail(function (jqXHR) {
                                             error(jqXHR);
@@ -421,9 +499,8 @@ $(()=>{
                                         mailPrenot.done(function (serverdata){
                                             window.location = "loginOK.html";
                                         })
-                                    })
-
-                                });
+                                    });
+                                })
                             }
                             else
                             {
@@ -453,4 +530,3 @@ $(()=>{
         return JSON.parse(window.atob(payload));
     }
 });
-

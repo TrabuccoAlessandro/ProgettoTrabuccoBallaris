@@ -93,7 +93,7 @@ $(()=>{
                 }
                 nuovoCampo.Tipologia = selectedSize.toString();
                 nuovoCampo.PrezzoOrario = document.getElementById("prezzo").value.toString();
-                nuovoCampo.Città = document.getElementById("città").value.toString();
+                nuovoCampo.Citta = document.getElementById("città").value.toString();
                 nuovoCampo.Posizione = document.getElementById("via").value.toString();
                 console.log(nuovoCampo);
 
@@ -175,11 +175,11 @@ $(()=>{
             
             currentTipologia=document.getElementById(serverData[i].Tipologia+""+i)
             currentTipologia.selected=true;
-            $("#txtCittà"+i).val(serverData[i].Città);
+            $("#txtCittà"+i).val(serverData[i].Citta);
             $("#txtPosizione"+i).val(serverData[i].Posizione);
             $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
             $("#idPrezzo"+i).html("Prezzo ad ora: "+serverData[i].PrezzoOrario+" €");
-            $("#idCittà"+i).html("Città: "+serverData[i].Città);
+            $("#idCittà"+i).html("Città: "+serverData[i].Citta);
             let cont=0;
             document.getElementById("btnPrenota"+i).addEventListener("click",function (){
                 cont++;
@@ -203,7 +203,7 @@ $(()=>{
                         mod._id=serverData[i]._id;
                         mod.Tipologia=$("#selectTipo"+i).val();
                         mod.PrezzoOrario=$("#txtPrezzo"+i).val();
-                        mod.Città=$("#txtCittà"+i).val();
+                        mod.Citta=$("#txtCittà"+i).val();
                         mod.Posizione=$("#txtPosizione"+i).val();
                         mod.Qualità=$("#selectQualita"+i).val();
                         let modifica=sendRequestNoCallback("/api/campiUpdate","POST",mod);

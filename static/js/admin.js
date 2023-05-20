@@ -142,39 +142,114 @@ $(()=>{
         let currentTipologia;
         for (let i=0;i<serverData.length;i++)
         {
-            let divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
-                "<div class='flip-card-inner'>"+
-                "<div class='flip-card-front'>"+
-                "<p class='titleCampi'></p>"+
-                "</div>"+
-                "<div class='flip-card-back'>"+
-                "<p class='titleCampi'>CARATTERISTICHE</p>"+
-                "<p id='idTipologia"+i+"'></p>"+
-                "<p id='idPrezzo"+i+"'></p>"+
-                "<p id='idCittà"+i+"'></p>"+
-                "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'>MODIFICA</button></center>"+
-                "<div class='collapse' id='collapseExample"+i+"'>"+
-                "<div class='card card-body'>"+
+            let divCampi;
+
+            if (serverData[i].Tipologia == "Erba")
+            {
+                divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
+                    "<div class='flip-card-inner'>"+
+                    "<div class='flip-card-front erba'>"+
+                    "<p class='titleCampi'></p>"+
+                    "</div>"+
+                    "<div class='flip-card-back'>"+
+                    "<p class='titleCampi'>CARATTERISTICHE</p>"+
+                    "<p id='idTipologia"+i+"'></p>"+
+                    "<p id='idPrezzo"+i+"'></p>"+
+                    "<p id='idCittà"+i+"'></p>"+
+                    "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'>MODIFICA</button></center>"+
+                    "<div class='collapse' id='collapseExample"+i+"'>"+
+                    "<div class='card card-body'>"+
                     "<form id='prenota' class='form' data-aos='fade-left'>"+
-                    "<select id='selectTipo"+i+"' class='form-select' aria-label='Select'>"+
+                    "<select id='selectTipo"+i+"' class='form-select input' aria-label='Select'>"+
                     "<option id='Terra"+i+"' class='input' value='Terra'>Terra</option>"+
                     "<option id='Sintetico"+i+"' class='input' value='Sintetico'>Sintetico</option>"+
-                    "<option id='Palestra"+i+"' class='input' value='Palestra'>Palestra</option>"+
+                    "<option id='Erba"+i+"' class='input' value='Erba'>Erba</option>"+
                     "</select>"+
-                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' value='15' type='text' disabled>"+
+                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' type='text'>"+
                     "<input class='input' id='txtCittà"+i+"' type='text' required=''> "+
                     "<input class='input' id='txtPosizione"+i+"' type='text' required=''>"+
                     "<button class='btn btn-primary' id='btnModifica"+i+"'>Modifica</button"+
                     "</form>"+
-                "</div>"+
-                "</div>"+
-                "</div>"+
-                "</div>"+
-                "</div>");
-            $("#ContCampi").append(divCampi);
-            
-            currentTipologia=document.getElementById(serverData[i].Tipologia+""+i)
-            currentTipologia.selected=true;
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#ContCampi").append(divCampi);
+            }
+            else if (serverData[i].Tipologia == "Sintetico")
+            {
+                divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
+                    "<div class='flip-card-inner'>"+
+                    "<div class='flip-card-front sintetico'>"+
+                    "<p class='titleCampi'></p>"+
+                    "</div>"+
+                    "<div class='flip-card-back'>"+
+                    "<p class='titleCampi'>CARATTERISTICHE</p>"+
+                    "<p id='idTipologia"+i+"'></p>"+
+                    "<p id='idPrezzo"+i+"'></p>"+
+                    "<p id='idCittà"+i+"'></p>"+
+                    "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'>MODIFICA</button></center>"+
+                    "<div class='collapse' id='collapseExample"+i+"'>"+
+                    "<div class='card card-body'>"+
+                    "<form id='prenota' class='form' data-aos='fade-left'>"+
+                    "<select id='selectTipo"+i+"' class='form-select input' aria-label='Select'>"+
+                    "<option id='Terra"+i+"' class='input' value='Terra'>Terra</option>"+
+                    "<option id='Sintetico"+i+"' class='input' value='Sintetico'>Sintetico</option>"+
+                    "<option id='Erba"+i+"' class='input' value='Erba'>Erba</option>"+
+                    "</select>"+
+                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' type='text'>"+
+                    "<input class='input' id='txtCittà"+i+"' type='text' required=''> "+
+                    "<input class='input' id='txtPosizione"+i+"' type='text' required=''>"+
+                    "<button class='btn btn-primary' id='btnModifica"+i+"'>Modifica</button"+
+                    "</form>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#ContCampi").append(divCampi);
+            }
+            else if (serverData[i].Tipologia == "Terra")
+            {
+                divCampi=$("<div class='flip-card' id='divCampi"+i+"' data-aos='fade-left'>"+
+                    "<div class='flip-card-inner'>"+
+                    "<div class='flip-card-front terra'>"+
+                    "<p class='titleCampi'></p>"+
+                    "</div>"+
+                    "<div class='flip-card-back'>"+
+                    "<p class='titleCampi'>CARATTERISTICHE</p>"+
+                    "<p id='idTipologia"+i+"'></p>"+
+                    "<p id='idPrezzo"+i+"'></p>"+
+                    "<p id='idCittà"+i+"'></p>"+
+                    "<center><button class='btn btn-collapse btnPrenota' type='button' id='btnPrenota"+i+"' data-toggle='collapse' data-target='#collapseExample"+i+"' aria-expanded='false' aria-controls='collapseExample"+i+"'>MODIFICA</button></center>"+
+                    "<div class='collapse' id='collapseExample"+i+"'>"+
+                    "<div class='card card-body'>"+
+                    "<form id='prenota' class='form' data-aos='fade-left'>"+
+                    "<select id='selectTipo"+i+"' class='form-select input' aria-label='Select'>"+
+                    "<option id='Terra"+i+"' class='input' value='Terra'>Terra</option>"+
+                    "<option id='Sintetico"+i+"' class='input' value='Sintetico'>Sintetico</option>"+
+                    "<option id='Erba"+i+"' class='input' value='Erba'>Erba</option>"+
+                    "</select>"+
+                    "<input class='input' id='txtPrezzo"+i+"' placeholder='"+serverData[i].PrezzoOrario+"' type='text'>"+
+                    "<input class='input' id='txtCittà"+i+"' type='text' required=''> "+
+                    "<input class='input' id='txtPosizione"+i+"' type='text' required=''>"+
+                    "<button class='btn btn-primary' id='btnModifica"+i+"'>Modifica</button"+
+                    "</form>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#ContCampi").append(divCampi);
+            }
+
+
+
+
+
+            $("#selectTipo"+i).val(serverData[i].Tipologia);
+            $("#txtPrezzo"+i).val(serverData[i].PrezzoOrario);
             $("#txtCittà"+i).val(serverData[i].Citta);
             $("#txtPosizione"+i).val(serverData[i].Posizione);
             $("#idTipologia"+i).html("Tipologia: "+serverData[i].Tipologia);
@@ -213,7 +288,7 @@ $(()=>{
                             modal();
                         });
                         modifica.done(function(serverData){
-                            window.location="admin.html";
+                            window.location.reload();
                         })
                     }
                 })

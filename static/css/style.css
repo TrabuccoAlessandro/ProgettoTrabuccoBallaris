@@ -2815,3 +2815,87 @@ h6 {
   border: 0;
   border-radius: 10px;
 }
+
+
+
+.cardPaga {
+  width: 100%;
+  background: lightgrey;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.foregroundPaga {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2.8px);
+  -webkit-backdrop-filter: blur(2.8px);
+  padding: 16px;
+  color: white;
+}
+
+.credit-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.credit-card-chip-container {
+  margin: 8px 0;
+  height: 80px;
+  width: 80px;
+}
+
+.chip {
+  width: 100%;
+  height: 100%;
+}
+
+.category, .bank {
+  font-size: smaller;
+  height: 15px;
+}
+
+.info-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.names {
+  align-self: flex-end;
+  text-transform: uppercase;
+  font-size: smaller;
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+.serial {
+  align-self: flex-end;
+  letter-spacing: 2px;
+  font-size: 15px;
+  font-family: monospace;
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+.expire {
+  margin-left: 3px;
+  font-size: smaller;
+  width: 12%;
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+#btnEseguiPay{
+  width: 15%;
+  margin-top: -5px;
+  align-self: flex-end;
+}

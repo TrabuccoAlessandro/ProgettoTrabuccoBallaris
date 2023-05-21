@@ -128,39 +128,93 @@ $(()=>{
         console.log(data);
         for (let i=0;i<data.length;i++)
         {
-            let id = data[i]._id;
-            let divCard=$("<div class='col'>"+
-              "<div class='our_solution_category'>"+
-                "<div class='solution_cards_box'>"+
-                  "<div class='solution_card'>"+
+            let id;
+            let divCard;
+            if(data[i].Pagato == false)
+            {
+                id = data[i]._id;
+                divCard=$("<div class='col'>" +
+                    "<div class='our_solution_category'>"+
+                    "<div class='solution_cards_box'>"+
+                    "<div class='solution_card'>"+
                     "<div class='hover_color_bubble'></div>"+
-                    
+
                     "<div class='solu_title'>"+
-                      "<h3>Prenotazione</h3>"+
+                    "<h3>Prenotazione</h3>"+
                     "</div>"+
                     "<div class='solu_description'>"+
-                      "<p id='idPren"+i+"'>"+
-                      "</p>"+
-                      "<p id='idPrenotante"+i+"'>"+
-                      "</p>"+
-                      "<p id='idCampo"+i+"'>"+
-                      "</p>"+
-                      "<p id='data"+i+"'>"+
-                      "</p>"+
-                      "<button type='button' id='btnPren "+id+"' class='read_more_btn'>Read More</button> <p></p><span></span>"+
-                      "<button style='background-color: red; margin-top: 5px; color: red' id='btnElPren "+id+"' class='btn btn-danger'>ELIMINA</button>"+
+                    "<p id='idPren"+i+"'>"+
+                    "</p>"+
+                    "<p id='idPrenotante"+i+"'>"+
+                    "</p>"+
+                    "<p id='idCampo"+i+"'>"+
+                    "</p>"+
+                    "<p id='data"+i+"'>"+
+                    "</p>"+
+                    "<button type='button' id='btnPren "+id+"' class='read_more_btn'>Read More</button> <p></p>"+
+                    "<button style='background-color: red;  color: red' id='btnElPren "+id+"' class='danger-color'>DEL</button> <span></span>"+
+                    "<button style=' margin-top: -3px; background-color: red;  color: blue' id='btnPaga "+id+"' class='btn btn-danger'>PAY</button>"+
                     "</div>"+
-                  "</div>"+
-                  
-                "</div>"+
-                "<!--  -->"+
-                
-              "</div>"+
-            "</div>"+
-          "</div>");
-          $("#divCard").append(divCard);
+                    "</div>"+
+
+                    "</div>"+
+                    "<!--  -->"+
+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#divCard").append(divCard);
+                document.getElementById("btnPaga "+id ).addEventListener("click",function (){
+                    $("#transazione").text("TRANSAZIONE: "+this.id.split(' ')[1]);
+                    $("#cvv").val("");
+                    $("#numCarta").val("");
+                    $("#scadCarta").val("");
+                    $("#propCarta").val("");
+                    $("#modalPaga").modal("show");
+                    $("#modalPaga").on("hidden.bs.modal", function(){
+                    });
+                    $("#modalClose").on("click", function(){
+                        $("#modalPaga").modal("hide");
+                    });
+                    $('html,body').css('cursor','default');
+                })
+            }
+            else
+            {
+                id = data[i]._id;
+                divCard=$("<div class='col'>"+
+                    "<div class='our_solution_category'>"+
+                    "<div class='solution_cards_box'>"+
+                    "<div class='solution_card'>"+
+                    "<div class='hover_color_bubble'></div>"+
+
+                    "<div class='solu_title'>"+
+                    "<h3>Prenotazione</h3>"+
+                    "</div>"+
+                    "<div class='solu_description'>"+
+                    "<p id='idPren"+i+"'>"+
+                    "</p>"+
+                    "<p id='idPrenotante"+i+"'>"+
+                    "</p>"+
+                    "<p id='idCampo"+i+"'>"+
+                    "</p>"+
+                    "<p id='data"+i+"'>"+
+                    "</p>"+
+                    "<button type='button' id='btnPren "+id+"' class='read_more_btn'>Read More</button> <p></p><span></span>"+
+                    "<button style='background-color: red; margin-top: 5px; color: red' id='btnElPren "+id+"' class='btn btn-danger'>ELIMINA</button>"+
+                    "</div>"+
+                    "</div>"+
+
+                    "</div>"+
+                    "<!--  -->"+
+
+                    "</div>"+
+                    "</div>"+
+                    "</div>");
+                $("#divCard").append(divCard);
+            }
           $("#idPrenotante"+i).html("Nome: "+payload.nome);
-          //$("#idCampo").html(data[0].idCampo);
+          $("#idCampo").html(data[0].idCampo);
           $("#data"+i).html("Data prenotazione: " + data[i].DataPrenotazione.split('T')[0].toString());
             document.getElementById("btnElPren "+id).addEventListener("click",function (){
                 $('html,body').css('cursor','wait');
@@ -205,10 +259,10 @@ $(()=>{
                         $("#lblOraFine").text(oraArriv.split(':')[0].toString() +":00");
                         $("#lblPosizione").text(dataServer.Citta.toString() + "--" + dataServer.Posizione);
                         $("#modalInfo").modal("show");
-                        $("#ModalErrore").on("hidden.bs.modal", function(){
+                        $("#modalInfo").on("hidden.bs.modal", function(){
                         });
                         $("#modalClose").on("click", function(){
-                            $("#ModalErrore").modal("hide");
+                            $("#modalInfo").modal("hide");
                         });
                         $('html,body').css('cursor','default');
 
@@ -361,8 +415,7 @@ $(()=>{
                     "</div>");
                 $("#ContCampi").append(divCampi);
             }
-
-          if(currentHour>9)
+          if(currentHour>8 && currentHour <23)
           {
             currentOption = document.getElementById(i+'ora' + currentHour);
             currentOption.selected = true;
@@ -422,6 +475,7 @@ $(()=>{
                         string = $("#txtData"+i).val().toString() + " " + $("#txtFine"+i).val().toString();
                         prenot.DataFine = string;
                         prenot.Tipo = $("#selectQualita"+i).val();
+                        prenot.Pagato = false;
                         console.log(string);
                         console.log(prenot);
 
@@ -432,7 +486,7 @@ $(()=>{
                         mail.cognome = $("#txtCognome"+i).val();
                         mail.prenotazione = prenot;
 
-                        
+
                         let controlloInsert = sendRequestNoCallback("/api/ctrlPrenotazione","POST",prenot);
                         controlloInsert.fail(function (jqXHR) {
                             error(jqXHR);
@@ -474,6 +528,8 @@ $(()=>{
                                     mail.prezzo = prezzo;
                                     prenot.Prezzo = prezzo;
                                     mail.prenotazione = prenot;
+                                    console.log(prenot);
+
                                     let insert = sendRequestNoCallback("/api/Prenota","POST",prenot);
                                     insert.fail(function (jqXHR) {
                                         console.log(jqXHR.message);
@@ -491,13 +547,14 @@ $(()=>{
 
                                     });
                                     insert.done(function (serverData){
+
                                         let mailPrenot = sendRequestNoCallback("/api/mailPrenot","POST",mail);
                                         mailPrenot.fail(function (jqXHR) {
                                             error(jqXHR);
                                             $('html,body').css('cursor','default');
                                         });
                                         mailPrenot.done(function (serverdata){
-                                            window.location = "loginOK.html";
+                                            window.location.reload()
                                         })
                                     });
                                 })
@@ -516,8 +573,37 @@ $(()=>{
         });
         
         }
-
     }
+    document.getElementById("btnEseguiPay").addEventListener("click",function (){
+        $('html,body').css('cursor','wait');
+        $("#errPaga").text("");
+        if((visa($("#numCarta").val().toString()) || masterCard($("#numCarta").val().toString())) && scadenza($("#scadCarta").val().toString()) && $("#propCarta").val().toString() != "" && cvv($("#cvv").val().toString())){
+            let idPreno = parseInt($("#transazione").text().split(' ')[1]);
+            let infoPreno = sendRequestNoCallback("/api/infoPren", "POST",{_id:idPreno})
+            infoPreno.fail(function (jqXHR) {
+                error(jqXHR);
+                $('html,body').css('cursor','default');
+            });
+            infoPreno.done(function (serverData){
+                serverData = JSON.parse(serverData)
+                serverData.Pagato = true;
+                let update = sendRequestNoCallback("/api/PrenUpdate","POST",serverData);
+                update.fail(function (jqXHR){
+                    console.error(jqXHR)
+                    $('html,body').css('cursor','default');
+                })
+                update.done(function (serverData){
+                    $('html,body').css('cursor','default');
+                    window.location.reload();
+                })
+            });
+        }
+        else
+        {
+            $("#errPaga").text("ERRORE NEL PAGAMENTO");
+            $('html,body').css('cursor','default');
+        }
+    })
     function formatDate(date) {
         var year = date.getFullYear();
         var month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -528,5 +614,18 @@ $(()=>{
         let payload = token.split(".")[1];
         payload = payload.replace(/-/g, "+").replace(/_/g, "/");
         return JSON.parse(window.atob(payload));
+    }
+
+    function masterCard(userInput) {
+        return /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/ .test(userInput);
+    }
+    function visa(userInput){
+            return /^4[0-9]{12}(?:[0-9]{3})?$/ .test(userInput);
+    }
+    function scadenza(userInput){
+        return /^(0[1-9]|1[0-2])\/?([0-9]{2})$/ .test(userInput);
+    }
+    function cvv(userInput){
+        return /^[0-9]{3,4}$/ .test(userInput);
     }
 });

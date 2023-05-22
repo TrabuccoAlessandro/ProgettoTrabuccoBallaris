@@ -335,104 +335,95 @@ app.post("/api/codiceVer",function (req,res){
             }
         });
         process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
-        let bodyHtml = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional //EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\" lang=\"en\">\n" +
-            "  \n" +
-            "  <head><link rel=\"stylesheet\" type=\"text/css\" hs-webfonts=\"true\" href=\"https://fonts.googleapis.com/css?family=Lato|Lato:i,b,bi\">\n" +
-            "    <title>Email template</title>\n" +
-            "    <meta property=\"og:title\" content=\"Email template\">\n" +
-            "    \n" +
-            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+        let bodyHtml = "<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "  <meta charset=\"UTF-8\">\n" +
+            "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+            "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+            "  <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap\" rel=\"stylesheet\">\n" +
+            "  <style>\n" +
+            "    /* Stili CSS per l'email */\n" +
+            "    body {\n" +
+            "      background-color: #f4f7fa;\n" +
+            "      font-family: 'Montserrat', Arial, sans-serif;\n" +
+            "      margin: 0;\n" +
+            "      padding: 0;\n" +
+            "    }\n" +
             "\n" +
-            "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+            "    .header {\n" +
+            "      background-color: #0080ff;\n" +
+            "      padding: 20px;\n" +
+            "      text-align: center;\n" +
+            "      color: #ffffff;\n" +
+            "    }\n" +
             "\n" +
-            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-            "    \n" +
-            "    <style type=\"text/css\">\n" +
-            "   \n" +
-            "      a{ \n" +
-            "        text-decoration: underline;\n" +
-            "        color: inherit;\n" +
-            "        font-weight: bold;\n" +
-            "        color: #253342;\n" +
-            "      }\n" +
-            "      \n" +
-            "      h1 {\n" +
-            "        font-size: 56px;\n" +
-            "      }\n" +
-            "      \n" +
-            "        h2{\n" +
-            "        font-size: 28px;\n" +
-            "        font-weight: 900; \n" +
-            "      }\n" +
-            "      \n" +
-            "      p {\n" +
-            "        font-weight: 100;\n" +
-            "      }\n" +
-            "      \n" +
-            "      td {\n" +
-            "    vertical-align: top;\n" +
-            "      }\n" +
-            "      \n" +
-            "      #email {\n" +
-            "        margin: auto;\n" +
-            "        width: 600px;\n" +
-            "        background-color: white;\n" +
-            "      }\n" +
-            "      \n" +
-            "      button{\n" +
-            "        font: inherit;\n" +
-            "        background-color: #FF7A59;\n" +
-            "        border: none;\n" +
-            "        padding: 10px;\n" +
-            "        text-transform: uppercase;\n" +
-            "        letter-spacing: 2px;\n" +
-            "        font-weight: 900; \n" +
-            "        color: white;\n" +
-            "        border-radius: 5px; \n" +
-            "        box-shadow: 3px 3px #d94c53;\n" +
-            "      }\n" +
-            "      \n" +
-            "      .subtle-link {\n" +
-            "        font-size: 9px; \n" +
-            "        text-transform:uppercase; \n" +
-            "        letter-spacing: 1px;\n" +
-            "        color: #CBD6E2;\n" +
-            "      }\n" +
-            "      \n" +
-            "    </style>\n" +
-            "    \n" +
-            "  </head>\n" +
-            "    \n" +
-            "    <body bgcolor=\"#F5F8FA\" style=\"width: 100%; margin: auto 0; padding:0; font-family:Lato, sans-serif; font-size:18px; color:#33475B; word-break:break-word\">\n" +
-            "  \n" +
-            " <! View in Browser Link --> \n" +
-            "      \n" +
-            "<div id=\"email\">\n" +
-            "  <! Banner --> \n" +
-            "         <table role=\"presentation\" width=\"100%\">\n" +
-            "            <tr>\n" +
-            "         \n" +
-            "              <td bgcolor=\"#20b2aa\" align=\"center\" style=\"color: white;\">\n" +
-            "            \n" +
-            "             <img src=\"static/img/logo.png\" width=\"400px\" align=\"middle\">\n" +
-            "                \n" +
-            "                <h1>Ecco il codice di verifica "+cod+" </h1>\n" +
-            "                \n" +
-            "              </td>\n" +
-            "        </table>\n" +
-            "        <! Unsubscribe Footer --> \n" +
-            "      \n" +
-            "  <table role=\"presentation\" bgcolor=\"#F5F8FA\" width=\"100%\" >\n" +
-            "      <tr>\n" +
-            "          <td align=\"left\" style=\"padding: 30px 30px;\">\n" +
-            "            <p style=\"color:#99ACC2\"> CREATE BY TRABUCCO-BALLARIS </p>\n" +
-            "              <a class=\"subtle-link\" href=\"#\"> SMASHSPHERE</a>      \n" +
-            "          </td>\n" +
-            "          </tr>\n" +
-            "      </table> \n" +
-            "      </div>\n" +
-            "    </body>\n" +
-            "      </html>";
+            "    .header h1 {\n" +
+            "      margin: 0;\n" +
+            "      font-size: 24px;\n" +
+            "      font-weight: 700;\n" +
+            "    }\n" +
+            "\n" +
+            "    .content {\n" +
+            "      max-width: 600px;\n" +
+            "      margin: 20px auto;\n" +
+            "      padding: 20px;\n" +
+            "      background-color: #ffffff;\n" +
+            "      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);\n" +
+            "      border-radius: 4px;\n" +
+            "    }\n" +
+            "\n" +
+            "    .content h2 {\n" +
+            "      font-size: 20px;\n" +
+            "      font-weight: 700;\n" +
+            "      margin-top: 0;\n" +
+            "    }\n" +
+            "\n" +
+            "    .content p {\n" +
+            "      font-size: 16px;\n" +
+            "      line-height: 1.5;\n" +
+            "      margin-bottom: 20px;\n" +
+            "    }\n" +
+            "\n" +
+            "    .content .code {\n" +
+            "      display: inline-block;\n" +
+            "      padding: 10px 20px;\n" +
+            "      background-color: #0080ff;\n" +
+            "      color: #ffffff;\n" +
+            "      font-size: 18px;\n" +
+            "      border-radius: 4px;\n" +
+            "    }\n" +
+            "\n" +
+            "    .footer {\n" +
+            "      text-align: center;\n" +
+            "      color: #999999;\n" +
+            "      margin-top: 40px;\n" +
+            "      padding: 20px;\n" +
+            "    }\n" +
+            "  </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "  <div class=\"header\">\n" +
+            "    <h1>Account Verification Code</h1>\n" +
+            "  </div>\n" +
+            "  <div class=\"content\">\n" +
+            "    <p>Thank you for creating an account with us. To complete the verification process, please enter the following code:</p>\n" +
+            "    <p class=\"code\">"+cod+"</p>\n" +
+            "    <p>\n" +
+            "      If you did not request this verification code, please ignore this email. Otherwise, please enter the code on the account verification page.\n" +
+            "    </p>\n" +
+            "    <p>\n" +
+            "      If you have any questions or need further assistance, please don't hesitate to contact our support team.\n" +
+            "    </p>\n" +
+            "    <p>\n" +
+            "      Thank you for choosing our services. We look forward to serving you!\n" +
+            "    </p>\n" +
+            "  </div>\n" +
+            "  <div class=\"footer\">\n" +
+            "    © 2023 SMASHSPHERE. All rights reserved.\n" +
+            "  </div>\n" +
+            "</body>\n" +
+            "</html>\n";
         const message={
             from:"trabucco.ballaris.esame@gmail.com",
             to: mailDest,

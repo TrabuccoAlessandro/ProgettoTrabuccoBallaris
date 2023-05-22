@@ -60,6 +60,61 @@ mongoFunctions.prototype.conta=function (nomeDb,collection,query,callback){
     });
 }
 
+mongoFunctions.prototype.conta2 = function(req,nomedb,collection,query,callback){
+    setConnection(nomedb,collection,function (errConn,coll,client) {
+        console.log(errConn);
+        if(errConn.codErr==-1){ // no error
+            getMaxValueFromCollection(client,nomedb)
+                .then((maxValue) => {
+                    // Gestisci il valore massimo restituito
+                    callback(errConn,{id:maxValue})
+                });
+        }
+        else
+            callback(errConn,{});
+    });
+}
+
+function getMaxValueFromCollection(client,dbName) {
+
+    // Connessione al client MongoDB
+    return client.connect()
+        .then(() => {
+            console.log('Connessione al database avvenuta con successo');
+
+            // Seleziona il database
+            const db = client.db(dbName);
+
+            // Seleziona la collezione
+            const collection = db.collection('Prenotazioni');
+
+            // Esegui la query per ottenere il valore massimo
+            return collection.aggregate([
+                { $group: { _id: null, maxValue: { $max: '$_id' } } }
+            ]).toArray();
+        })
+        .then((result) => {
+            if (result.length > 0) {
+                const maxValue = result[0].maxValue;
+                console.log('Valore massimo:', maxValue);
+                return maxValue;
+            } else {
+                console.log('La collezione è vuota');
+                return null;
+            }
+        })
+        .catch((error) => {
+            console.error('Errore durante l\'esecuzione della query:', error);
+            return null;
+        })
+        .finally(() => {
+            // Chiudi la connessione al database
+            client.close();
+            console.log('Connessione chiusa');
+        });
+}
+
+
 mongoFunctions.prototype.find=function (nomeDb,collection,query,callback){
     setConnection(nomeDb,collection,function (errConn,coll,client) {
         if(errConn.codErr==-1){

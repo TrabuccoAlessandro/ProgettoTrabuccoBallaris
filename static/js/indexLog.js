@@ -462,10 +462,13 @@ $(()=>{
                     });
                     id.done(function (serverData){
                         let pay = parseJwt(localStorage.getItem("token"));
-                        serverData = JSON.parse(serverData);
-                        let id = parseInt(serverData) +1;
+                        serverData = serverData.split(':')[1];
+                        console.log(serverData);
+                        let id = serverData.split('}')[0];
+                        id = parseInt(id)+1;
+                        console.log(id);
                         console.log(pay);
-                        prenot._id = parseInt(id);
+                        prenot._id = id;
                         prenot.idPrenotante = pay.id;
                         prenot.idCampo=IdCampo;
                         let string =$("#txtData"+i).val().toString() + " " + $("#txtOra"+i).val().toString();

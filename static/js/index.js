@@ -22,7 +22,7 @@ $(()=>{
     });
 
      document.getElementById("exitLog").addEventListener("click",function (){
-    $("#Login").hide();
+         $("#Login").hide();
 })
 
     document.getElementById("signIn").addEventListener("click",function (){

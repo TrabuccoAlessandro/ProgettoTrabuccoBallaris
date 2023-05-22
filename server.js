@@ -68,16 +68,22 @@ app.get("/api/getId", function (req, res) {
         }
     });
 });
+
+
 app.get("/api/getIdPren", function (req, res) {
-    mongoFunctions.conta( "prova", "Prenotazioni", {}, function (err, data) {
+    mongoFunctions.conta2( req,"prova", "Prenotazioni", {}, function (err, data) {
         if (err.codErr == -1) {
-            res.send(data.toString());
+            console.log("++++");
+            console.log(data);
+            res.send(data);
         }
         else{
             error(req, res, {code:err.codErr, message:err.message});
         }
     });
 });
+
+
 app.get("/api/getIdCampo", function (req, res) {
     mongoFunctions.conta( "prova", "campi", {}, function (err, data) {
         if (err.codErr == -1) {

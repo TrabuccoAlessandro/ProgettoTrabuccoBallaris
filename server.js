@@ -471,24 +471,107 @@ app.post("/api/mailPrenot",function (req,res){
     let bodyHtml = "<!DOCTYPE html>\n" +
         "<html lang=\"en\">\n" +
         "<head>\n" +
-        "    <meta charset=\"UTF-8\">\n" +
-        "    <title>Title</title>\n" +
+        "  <meta charset=\"UTF-8\">\n" +
+        "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+        "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+        "  <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap\" rel=\"stylesheet\">\n" +
+        "  <style>\n" +
+        "    /* Stili CSS per l'email */\n" +
+        "    body {\n" +
+        "      background-color: #f4f7fa;\n" +
+        "      font-family: 'Montserrat', Arial, sans-serif;\n" +
+        "      margin: 0;\n" +
+        "      padding: 0;\n" +
+        "    }\n" +
+        "\n" +
+        "    .header {\n" +
+        "      background-color: #0080ff;\n" +
+        "      padding: 20px;\n" +
+        "      text-align: center;\n" +
+        "      color: #ffffff;\n" +
+        "    }\n" +
+        "\n" +
+        "    .header h1 {\n" +
+        "      margin: 0;\n" +
+        "      font-size: 24px;\n" +
+        "      font-weight: 700;\n" +
+        "    }\n" +
+        "\n" +
+        "    .content {\n" +
+        "      max-width: 600px;\n" +
+        "      margin: 20px auto;\n" +
+        "      padding: 20px;\n" +
+        "      background-color: #ffffff;\n" +
+        "      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);\n" +
+        "      border-radius: 4px;\n" +
+        "    }\n" +
+        "\n" +
+        "    .content h2 {\n" +
+        "      font-size: 20px;\n" +
+        "      font-weight: 700;\n" +
+        "      margin-top: 0;\n" +
+        "    }\n" +
+        "\n" +
+        "    .content p {\n" +
+        "      font-size: 16px;\n" +
+        "      line-height: 1.5;\n" +
+        "      margin-bottom: 20px;\n" +
+        "    }\n" +
+        "\n" +
+        "    .content .highlight {\n" +
+        "      font-weight: 700;\n" +
+        "    }\n" +
+        "\n" +
+        "    .content .button {\n" +
+        "      display: inline-block;\n" +
+        "      padding: 10px 20px;\n" +
+        "      background-color: #0080ff;\n" +
+        "      color: #ffffff;\n" +
+        "      text-decoration: none;\n" +
+        "      border-radius: 4px;\n" +
+        "      transition: background-color 0.3s ease;\n" +
+        "    }\n" +
+        "\n" +
+        "    .content .button:hover {\n" +
+        "      background-color: #0059b3;\n" +
+        "    }\n" +
+        "\n" +
+        "    .footer {\n" +
+        "      text-align: center;\n" +
+        "      color: #999999;\n" +
+        "      margin-top: 40px;\n" +
+        "      padding: 20px;\n" +
+        "    }\n" +
+        "  </style>\n" +
         "</head>\n" +
         "<body>\n" +
-        "<div style=\"border: 3px solid red; background-color: black;\"><h1 style=\"color: white; font-weight: bold; text-decoration: underline;\">PRENOTAZIONE CAMPO DA TENNIS</h1>\n" +
-        "</div>\n" +
-        "<div style=\"background-color: lightseagreen; color: black; padding: 4px;\">\n" +
-        "    <h3>"+req.body.nome +"</h3>\n" +
-        "    <h3>"+req.body.cognome +"</h3>\n" +
-        "    <h3>Data Prenotazione --> "+req.body.prenotazione.Giorno +"</h3>\n" +
-        "    <h3>Ora Inzio -->"+oraInizio+"</h3>\n" +
-        "    <h3>Ora Fine --> "+oraFine+"</h3>\n" +
-        "    <h3>Tipo --> "+req.body.prenotazione.Tipo+"</h3>\n" +
-        "    <h2 style='text-align: right; color: red; padding: 4px; border: 1px double black'>TOTALE --> €"+req.body.prenotazione.Prezzo+"</h2>\n" +
-        "</div>\n" +
-        "\n" +
-        "</body>\n" +
-        "</html>"
+        "  <div class=\"header\">\n" +
+        "    <h1>Tennis Court Reservation Confirmation</h1>\n" +
+        "  </div>\n" +
+        "  <div class=\"content\">\n" +
+        "    <h2>Dear "+req.body.nome+" "+req.body.cognome +",</h2>\n" +
+        "    <p>Your reservation for the tennis court on "+req.body.prenotazione.Giorno+" has been confirmed.</p>\n" +
+        "    <p>\n" +
+        "      <span class=\"highlight\">Reservation Details:</span><br>\n" +
+        "      START: "+oraInizio+"<br>\n" +
+        "      END: "+oraFine+"<br>\n" +
+        "      PRICE: €"+req.body.prenotazione.Prezzo+" "+
+        "    </p>\n" +
+        "    <p>\n" +
+        "      Please make sure to arrive at least 15 minutes before your scheduled time. If you need to cancel or reschedule your reservation, please do so at least 24 hours in advance. <br> you can pay online on our web site or at the desk \n" +
+        "    </p>\n" +
+        "    <p>\n" +
+        "      If you have any questions or need further assistance, please don't hesitate to contact us.\n" +
+        "    </p>\n" +
+        "    <p>\n" +
+        "      Thank you for choosing our tennis facilities. We hope you have a great time on the court!\n" +
+        "    </p>\n" +
+        "    <p>\n" +
+        "    </p>\n" +
+        "  </div>\n" +
+        "  <div class=\"footer\">\n" +
+        "    © 2023 SMASHSPHERE. All\n";
+
     const message={
         from:"trabucco.ballaris.esame@gmail.com",
         to: mailDest,
@@ -508,6 +591,110 @@ app.post("/api/mailPrenot",function (req,res){
         }
     });
 })
+
+
+app.post("/api/mailPay",function (req,res){
+
+    let mailDest = req.body.mail;
+
+    let transport=nodemailer.createTransport({
+        service:'gmail',
+        auth:{
+            user:"trabucco.ballaris.esame@gmail.com",
+            pass:pwd2
+        }
+    });
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
+    let bodyHtml = "<!DOCTYPE html>\n" +
+        "<html lang=\"en\">\n" +
+        "<head>\n" +
+        "  <meta charset=\"UTF-8\">\n" +
+        "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+        "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+        "  <style>\n" +
+        "    /* Stili CSS per l'email */\n" +
+        "    body {\n" +
+        "      background-color: #f4f7fa;\n" +
+        "      font-family: Arial, sans-serif;\n" +
+        "    }\n" +
+        "\n" +
+        "    .container {\n" +
+        "      max-width: 600px;\n" +
+        "      margin: 0 auto;\n" +
+        "      padding: 20px;\n" +
+        "      background-color: #ffffff;\n" +
+        "      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);\n" +
+        "    }\n" +
+        "\n" +
+        "    h1 {\n" +
+        "      color: #0080ff;\n" +
+        "    }\n" +
+        "\n" +
+        "    p {\n" +
+        "      color: #333333;\n" +
+        "      line-height: 1.5;\n" +
+        "    }\n" +
+        "\n" +
+        "    a {\n" +
+        "      color: #0080ff;\n" +
+        "      text-decoration: none;\n" +
+        "    }\n" +
+        "\n" +
+        "    .button {\n" +
+        "      display: inline-block;\n" +
+        "      padding: 10px 20px;\n" +
+        "      background-color: #0080ff;\n" +
+        "      color: #ffffff;\n" +
+        "      text-decoration: none;\n" +
+        "      border-radius: 4px;\n" +
+        "    }\n" +
+        "\n" +
+        "    .footer {\n" +
+        "      margin-top: 30px;\n" +
+        "      text-align: center;\n" +
+        "      color: #999999;\n" +
+        "    }\n" +
+        "  </style>\n" +
+        "</head>\n" +
+        "<body>\n" +
+        "  <div class=\"container\">\n" +
+        "    <h1>CONFERMA DEL PAGAMENTO PER LA PRENOTAZIONE N° "+req.body.transazione+"</h1>\n" +
+        "    <p>\n" +
+        "      Grazie per aver prenotato con noi. Siamo felici che fai parte del nostro team!\n" +
+        "    </p>\n" +
+        "    <p>\n" +
+        "      <h3>RESOCONTO</h3>" +
+        "      <ul><li>"+req.body.proprietario+"</li><li>"+req.body.carta+"</li><li>"+req.body.costo+" €</li></ul>" +
+        "    </p>\n" +
+        "    <p>\n" +
+        "      If you have any questions, feel free to <a href=\"trabucco.ballaris.esame@gmail.com\">contact us</a>. We'd be happy to assist you.\n" +
+        "    </p>\n" +
+        "    <div class=\"footer\">\n" +
+        "      © 2023 SMASHSPHERE. All rights reserved.\n" +
+        "    </div>\n" +
+        "  </div>\n" +
+        "</body>\n" +
+        "</html>\n";
+    const message={
+        from:"trabucco.ballaris.esame@gmail.com",
+        to: mailDest,
+        subject:"CONFERMA PAGAMENTO",
+        html:bodyHtml
+    };
+    transport.sendMail(message,function (err,info){
+        if(err){
+            console.log(err);
+            process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=1;
+            res.send("Errore di invio mail");
+        }
+        else{
+            console.log(info);
+            process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=1;
+            res.send(JSON.stringify(info));
+        }
+    });
+})
+
 
 
 

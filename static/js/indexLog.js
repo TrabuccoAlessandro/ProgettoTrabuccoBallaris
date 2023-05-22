@@ -578,9 +578,14 @@ $(()=>{
         }
     }
     document.getElementById("btnEseguiPay").addEventListener("click",function (){
+
         $('html,body').css('cursor','wait');
         $("#errPaga").text("");
         if((visa($("#numCarta").val().toString()) || masterCard($("#numCarta").val().toString())) && scadenza($("#scadCarta").val().toString()) && $("#propCarta").val().toString() != "" && cvv($("#cvv").val().toString())){
+            let tokenPreso = localStorage.getItem("token");
+            let payload = parseJwt(tokenPreso);
+            let oggMail = {mail:payload.mail,carta:$("#numCarta").val().toString(),proprietario:$("#propCarta").val().toString()}
+
             let idPreno = parseInt($("#transazione").text().split(' ')[1]);
             let infoPreno = sendRequestNoCallback("/api/infoPren", "POST",{_id:idPreno})
             infoPreno.fail(function (jqXHR) {
@@ -589,6 +594,8 @@ $(()=>{
             });
             infoPreno.done(function (serverData){
                 serverData = JSON.parse(serverData)
+                oggMail.costo = serverData.Prezzo;
+                oggMail.transazione = serverData._id;
                 serverData.Pagato = true;
                 let update = sendRequestNoCallback("/api/PrenUpdate","POST",serverData);
                 update.fail(function (jqXHR){
@@ -596,8 +603,18 @@ $(()=>{
                     $('html,body').css('cursor','default');
                 })
                 update.done(function (serverData){
-                    $('html,body').css('cursor','default');
-                    window.location.reload();
+
+                    console.log(oggMail);
+                    let mailPay = sendRequestNoCallback("/api/mailPay", "POST",oggMail);
+                    mailPay.fail(function (jqXHR){
+                        console.error(jqXHR)
+                        $('html,body').css('cursor','default');
+                    })
+                    mailPay.done(function (serverData) {
+                        $('html,body').css('cursor', 'default');
+                        window.location.reload();
+                    });
+
                 })
             });
         }

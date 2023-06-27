@@ -415,7 +415,7 @@ $(()=>{
                     "</div>");
                 $("#ContCampi").append(divCampi);
             }
-          if(currentHour>8 && currentHour <23)
+          if(currentHour>9 && currentHour <23)
           {
             currentOption = document.getElementById(i+'ora' + currentHour);
             currentOption.selected = true;
@@ -461,6 +461,7 @@ $(()=>{
                         $('html,body').css('cursor','default');
                     });
                     id.done(function (serverData){
+                        console.log(serverData);
                         let pay = parseJwt(localStorage.getItem("token"));
                         serverData = serverData.split(':')[1];
                         console.log(serverData);
@@ -488,6 +489,8 @@ $(()=>{
                         mail.nome = $("#txtNome"+i).val();
                         mail.cognome = $("#txtCognome"+i).val();
                         mail.prenotazione = prenot;
+
+                        console.log(prenot);
 
 
                         let controlloInsert = sendRequestNoCallback("/api/ctrlPrenotazione","POST",prenot);
